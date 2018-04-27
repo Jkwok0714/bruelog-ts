@@ -15,8 +15,12 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "types": [ "react", "react-dom", "jest" ]
   },
+  "include": [
+    "src"
+  ],
   "exclude": [
     "node_modules",
     "build",
