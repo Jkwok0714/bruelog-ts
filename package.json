@@ -3,17 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
+    "react-draggable-list": "^3.5.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts-ts": "2.15.1"
+    "react-scripts-ts": "2.15.1",
+    "sqlite3": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "server": "node server/index.js",
+    "server-dev": "nodemon server/index.js"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
@@ -21,6 +27,8 @@
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
     "@types/react-router-dom": "^4.2.6",
+    "jsdoc": "^3.5.5",
+    "nodemon": "^1.17.3",
     "typescript": "^2.8.3"
   }
 }
