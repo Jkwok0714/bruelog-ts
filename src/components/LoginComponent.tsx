@@ -1,13 +1,24 @@
 import * as React from 'react';
+import APIService from '../helpers/APIService';
 
 class LoginComponent extends React.Component {
   public state = {
-    answer: '',
-    question: ''
+    passcode: '',
+    username: ''
   };
 
   public render () {
-    return <div>Login Component</div>;
+    const { username, passcode } = this.state;
+
+    return (
+      <div>
+        Login Component
+        <form onSubmit={this.submitLogin} />
+      </div>);
+  }
+
+  private submitLogin () {
+    APIService.post();
   }
 }
 
