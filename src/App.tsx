@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Route } from 'react-router-dom';
+import { Link, Route, withRouter } from 'react-router-dom';
 
 import './App.css';
 import AddNewEntryComponent from './components/AddNewEntryComponent';
@@ -20,14 +20,16 @@ class App extends React.Component {
     return (
       <div className="App">
         {loggedIn ? (
-          <Router>
-            <Route exact={true} component={ HomeComponent }/>
-            <Route path='management' component={ ManagementComponent }/>
-            <Route path='add' component={ AddNewEntryComponent }/>
-            <Route path='signup' component={ SignupComponent }/>
-          </Router>
+            <div>
+              <Route path='/' component={ HomeComponent }/>
+              <Route path='/management' component={ ManagementComponent }/>
+              <Route path='/add' component={ AddNewEntryComponent }/>
+            </div>
         ) : (
-          <LoginComponent setLogin={this.setLogin} />
+            <div>
+              <Route exact={true} path='/' component={ LoginComponent }/>
+              <Route exact={true} path='/signup' component={ SignupComponent }/>
+            </div>
         )}
 
       </div>
@@ -39,4 +41,4 @@ class App extends React.Component {
   }
 }
 
-export default App as React.ComponentClass;
+export default withRouter(App as React.ComponentClass<any>);

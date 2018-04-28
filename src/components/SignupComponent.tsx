@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { Switch, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class SignupComponent extends React.Component {
 
@@ -8,4 +8,4 @@ class SignupComponent extends React.Component {
   }
 };
 
-export default SignupComponent as React.ComponentClass;
+export default withRouter(SignupComponent as React.ComponentClass<any>);

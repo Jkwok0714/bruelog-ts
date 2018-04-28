@@ -1,9 +1,5 @@
 // Reducers
 class InitialReducer {
-  public static initialState = {
-    loggedIn: false
-  };
-
   public static reducer (state = InitialReducer.initialState, action) {
     switch (action.type) {
       case 'changeLogin':
@@ -12,6 +8,10 @@ class InitialReducer {
       default:
       return state;
     }
+  };
+
+  private static initialState = {
+    loggedIn: false
   };
 }
 

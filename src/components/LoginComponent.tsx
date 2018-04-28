@@ -1,6 +1,6 @@
 import APIService from 'helpers/APIService';
 import * as React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 import './styles/login.css';
 
 const LOGIN_PATH = 'login';
@@ -15,7 +15,6 @@ class LoginComponent extends React.Component {
     const { username, passcode } = this.state;
 
     return (
-      <BrowserRouter>
         <div className='login-wrapper'>
           <form className='login-form' onSubmit={this.submitLogin}>
             <input
@@ -34,9 +33,8 @@ class LoginComponent extends React.Component {
             <button>Enter</button>
           </form>
 
-          <button><Link to="/signup">Create Account</Link></button>
-        </div>
-      </BrowserRouter>);
+          <button><Link to="signup">Create Account</Link></button>
+        </div>);
   }
 
   private onChange (key: string, e: React.FormEvent<HTMLInputElement>) {
@@ -57,4 +55,4 @@ class LoginComponent extends React.Component {
   }
 }
 
-export default LoginComponent as React.ComponentClass<any>;
+export default withRouter(LoginComponent as React.ComponentClass<any>);
