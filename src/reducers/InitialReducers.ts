@@ -1,17 +1,22 @@
 // Reducers
 class InitialReducer {
   public static reducer (state = InitialReducer.initialState, action) {
+    window.console.log('Reducer handling', action.type);
     switch (action.type) {
       case 'changeLogin':
-      // window.alert('Change dat arthur to ' + action.arthur);
-      return Object.assign({}, state, {loggedIn: action.login});
+        return Object.assign({}, state, {loggedIn: action.login});
+      case 'changeMessage':
+        return Object.assign({}, state, {message: action.message});
+      case 'clearMessage':
+        return Object.assign({}, state, {message: null});
       default:
-      return state;
+        return state;
     }
   };
 
   private static initialState = {
-    loggedIn: false
+    loggedIn: false,
+    message: null
   };
 }
 

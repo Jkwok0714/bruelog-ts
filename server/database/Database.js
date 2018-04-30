@@ -35,6 +35,36 @@ class Database {
     }
   }
 
+  write (query, data) {
+    return new Promise((resolve, reject) => {
+      Helpers.log(`W-QUERY: ${query}`, 'C');
+      this.db.run(query, data, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  read (query) {
+    return new Promise((resolve, reject) => {
+      Helpers.log(`R-QUERY: ${query}`, 'C');
+      this.db.all(query, (err, rows) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
+  }
+
+  delete (query) {
+    
+  }
+
   serialize () {
     Helpers.log('Creating schema', 'C');
     Serialize.createSchema(this.db);

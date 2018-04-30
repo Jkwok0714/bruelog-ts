@@ -31,7 +31,6 @@ class App extends React.Component {
               <Route exact={true} path='/signup' component={ SignupComponent }/>
             </div>
         )}
-
       </div>
     );
   }
