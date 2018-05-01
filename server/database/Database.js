@@ -48,10 +48,10 @@ class Database {
     });
   }
 
-  read (query) {
+  read (query, data) {
     return new Promise((resolve, reject) => {
       Helpers.log(`R-QUERY: ${query}`, 'C');
-      this.db.all(query, (err, rows) => {
+      this.db.all(query, data, (err, rows) => {
         if (err) {
           reject(err);
         } else {
@@ -62,7 +62,7 @@ class Database {
   }
 
   delete (query) {
-    
+
   }
 
   serialize () {

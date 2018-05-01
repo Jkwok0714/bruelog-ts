@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Link, Route, withRouter } from 'react-router-dom';
 
@@ -9,13 +10,13 @@ import LoginComponent from './components/LoginComponent';
 import ManagementComponent from './components/ManagementComponent';
 import SignupComponent from './components/SignupComponent';
 
-class App extends React.Component {
-  public state = {
-    loggedIn: false
-  };
+interface IAppProps {
+  loggedIn: boolean;
+}
 
+class App extends React.Component<IAppProps, {}> {
   public render() {
-    const { loggedIn } = this.state;
+    const { loggedIn } = this.props;
 
     return (
       <div className="App">
@@ -34,10 +35,12 @@ class App extends React.Component {
       </div>
     );
   }
-
-  private setLogin = (loggedIn: boolean) => {
-    this.setState({ loggedIn });
-  }
 }
 
-export default withRouter(App as React.ComponentClass<any>);
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(App as React.ComponentClass<any>));

@@ -9,6 +9,8 @@ class InitialReducer {
         return Object.assign({}, state, {message: action.message});
       case 'clearMessage':
         return Object.assign({}, state, {message: null});
+      case 'changeUser':
+        return Object.assign({}, state, {user: action.user});
       default:
         return state;
     }
@@ -16,7 +18,8 @@ class InitialReducer {
 
   private static initialState = {
     loggedIn: false,
-    message: null
+    message: null,
+    user: null
   };
 }
 

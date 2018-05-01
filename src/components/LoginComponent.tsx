@@ -1,11 +1,26 @@
+import LoginActions from 'actions/LoginActions';
+import Messages from 'constants/messages';
 import APIService from 'helpers/APIService';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 import './styles/login.css';
 
 const LOGIN_PATH = 'login';
 
-class LoginComponent extends React.Component {
+interface ILoginComponentProps {
+  message: string;
+  changeLoginState: (loginState: boolean) => void;
+  changeMessage: (message: string) => void;
+  changeUser: (user: object) => void;
+}
+
+interface ILoginComponentState {
+  passcode: string;
+  username: string;
+}
+
+class LoginComponent extends React.Component<ILoginComponentProps, ILoginComponentState> {
   public state = {
     passcode: '',
     username: ''
@@ -13,9 +28,11 @@ class LoginComponent extends React.Component {
 
   public render () {
     const { username, passcode } = this.state;
+    const { message } = this.props;
 
     return (
         <div className='login-wrapper'>
+          <div className='login-message'>{ message }</div>
           <form className='login-form' onSubmit={this.submitLogin}>
             <input
               onChange={(e) => this.onChange('username', e)}
@@ -38,21 +55,44 @@ class LoginComponent extends React.Component {
   }
 
   private onChange (key: string, e: React.FormEvent<HTMLInputElement>) {
-    this.setState({ [key]: e.currentTarget.value });
+    this.setState({ [key as any]: e.currentTarget.value });
   }
 
   private submitLogin = (e) => {
     e.preventDefault();
 
     const { username, passcode } = this.state;
+    const { changeLoginState, changeMessage, changeUser } = this.props;
 
     const data = {
       passcode,
       username
     };
 
-    APIService.post(LOGIN_PATH, data);
+    APIService.post(LOGIN_PATH, data).then((res: any) => {
+      // Success
+      window.console.log(res.data);
+      changeLoginState(true);
+      changeUser(res.data);
+    }).catch(err => {
+      // Fail
+      changeMessage(Messages.loginFailed);
+    });
   }
 }
 
-export default withRouter(LoginComponent as React.ComponentClass<any>);
+const mapStateToProps = (state) => {
+  return {
+    message: state.message
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeLoginState: (loginState) => dispatch(LoginActions.changeLoginState(loginState)),
+    changeMessage: (message) => dispatch(LoginActions.changeMessage(message)),
+    changeUser: (user) => dispatch(LoginActions.changeUser(user))
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginComponent as React.ComponentClass<any>));

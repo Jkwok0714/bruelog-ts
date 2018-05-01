@@ -11,6 +11,13 @@ class LoginActions {
       type: 'changeMessage'
     };
   }
+
+  public static changeUser = (user = {}) => {
+    return {
+      type: 'changeUser',
+      user
+    }
+  }
 }
 
 export default LoginActions;

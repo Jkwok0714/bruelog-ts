@@ -1,4 +1,5 @@
 import LoginActions from 'actions/LoginActions';
+import Messages from 'constants/messages';
 import APIService from 'helpers/APIService';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -11,19 +12,29 @@ interface ISignupComponentProps {
   message: string;
 
   registered: any;
+  history: any;
 }
 
-class SignupComponent extends React.Component<ISignupComponentProps, any> {
+interface ISignupComponentState {
+  confirm: string;
+  error: string;
+  passcode: string;
+  username: string;
+}
+
+class SignupComponent extends React.Component<ISignupComponentProps, ISignupComponentState> {
   public state = {
     confirm: '',
+    error: '',
     passcode: '',
     username: ''
   };
 
   public render () {
-    const { confirm, passcode, username } = this.state;
+    const { confirm, passcode, username, error } = this.state;
 
     return (<div>
+      <div className='login-message'>{ error }</div>
       <form className='login-form' onSubmit={this.submitLogin}>
         <input
           onChange={(e) => this.onChange('username', e)}
@@ -54,16 +65,19 @@ class SignupComponent extends React.Component<ISignupComponentProps, any> {
 
   private onChange (key: string, e: React.FormEvent<HTMLInputElement>) {
     window.console.log(this.props.message);
-    this.setState({ [key]: e.currentTarget.value });
+    this.setState({ [key as any]: e.currentTarget.value });
+
+    // this.props.history.push('/fap');
   }
 
   private submitLogin = (e) => {
     e.preventDefault();
 
     const { confirm, username, passcode } = this.state;
+    const { changeMessage } = this.props;
 
     if (confirm !== passcode) {
-      window.alert('Passcodes don\'t match');
+      this.setState({ error: Messages.passwordValidateError });
     }
 
     const data = {
@@ -71,9 +85,17 @@ class SignupComponent extends React.Component<ISignupComponentProps, any> {
       username
     };
 
-    this.props.changeMessage('Hello');
+    // this.props.changeMessage('Hello');
 
-    APIService.post(REGISTER_PATH, data);
+    APIService.post(REGISTER_PATH, data).then((res: any) => {
+      if (res.status === 200) {
+        // Success
+        changeMessage(Messages.userCreated);
+        this.props.history.push('/');
+      }
+    }).catch(err => {
+      this.setState({ error: Messages.submitError });
+    });
   }
 };
 
