@@ -1,11 +1,13 @@
 import LoginActions from 'actions/LoginActions';
 import Messages from 'constants/messages';
 import APIService from 'helpers/APIService';
+import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 import './styles/login.css';
 
+const LOGIN_COOKIE_NAME = 'bruelogin';
 const LOGIN_PATH = 'login';
 
 interface ILoginComponentProps {
@@ -25,6 +27,16 @@ class LoginComponent extends React.Component<ILoginComponentProps, ILoginCompone
     passcode: '',
     username: ''
   };
+
+  public componentDidMount () {
+    const { changeLoginState, changeUser } = this.props;
+
+    const loginCache = Helpers.readUserData();
+    if (loginCache) {
+      changeLoginState(true);
+      changeUser(loginCache);
+    }
+  }
 
   public render () {
     const { username, passcode } = this.state;
@@ -74,9 +86,10 @@ class LoginComponent extends React.Component<ILoginComponentProps, ILoginCompone
       window.console.log(res.data);
       changeLoginState(true);
       changeUser(res.data);
+      Helpers.setUserData(res.data);
     }).catch(err => {
       // Fail
-      changeMessage(Messages.loginFailed);
+      changeMessage(`${Messages.loginFailed}: ${err.message}`);
     });
   }
 }

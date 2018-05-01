@@ -1,7 +1,30 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 
-const HomeComponent: React.StatelessComponent = (props: any) => {
-  return (<div>Home</div>);
+import './styles/home.css';
+
+interface IHomeProps {
+  message: string;
+  user: any;
 }
 
-export default HomeComponent;
+class HomeComponent extends React.Component<IHomeProps, {}> {
+  public render () {
+    const { message, user } = this.props;
+    const username = user ? user.username : '';
+
+    return (<div className='home-wrapper'>
+      <h2>{ `Hello ${username}.` }</h2>
+    </div>);
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    message: state.message,
+    user: state.user
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(HomeComponent as React.ComponentClass<any>));

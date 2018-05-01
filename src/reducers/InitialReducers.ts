@@ -1,7 +1,6 @@
 // Reducers
 class InitialReducer {
   public static reducer (state = InitialReducer.initialState, action) {
-    window.console.log('Reducer handling', action.type);
     switch (action.type) {
       case 'changeLogin':
         return Object.assign({}, state, {loggedIn: action.login});
@@ -19,7 +18,7 @@ class InitialReducer {
   private static initialState = {
     loggedIn: false,
     message: null,
-    user: null
+    user: {}
   };
 }
 
