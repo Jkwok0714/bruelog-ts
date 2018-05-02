@@ -4,8 +4,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Link, Route, withRouter } from 'react-router-dom';
 
 import './App.css';
-import AddNewEntryComponent from './components/AddNewEntryComponent';
 import HomeComponent from './components/HomeComponent';
+import LogEntryComponent from './components/LogEntryComponent';
 import LoginComponent from './components/LoginComponent';
 import ManagementComponent from './components/ManagementComponent';
 import SignupComponent from './components/SignupComponent';
@@ -15,6 +15,10 @@ interface IAppProps {
 }
 
 class App extends React.Component<IAppProps, {}> {
+  public componentDidMount () {
+      window.console.log('LoggedIn', this.props.loggedIn);
+  }
+
   public render() {
     const { loggedIn } = this.props;
 
@@ -22,9 +26,9 @@ class App extends React.Component<IAppProps, {}> {
       <div className="App">
         {loggedIn ? (
             <div>
-              <Route path='/' component={ HomeComponent }/>
-              <Route path='/management' component={ ManagementComponent }/>
-              <Route path='/add' component={ AddNewEntryComponent }/>
+              <Route exact={true} path='/' component={ HomeComponent }/>
+              <Route exact={true} path='/settings' component={ ManagementComponent }/>
+              <Route exact={true} path='/entry' component={ LogEntryComponent }/>
             </div>
         ) : (
             <div>

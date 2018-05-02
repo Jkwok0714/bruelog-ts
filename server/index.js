@@ -2,6 +2,8 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const formidable = require('formidable');
+const fs = require('fs');
 
 const Helpers = require('./helpers.js');
 const Database = require('./database/database.js').Database;
@@ -11,6 +13,8 @@ const UserHandler = require('./requestHandlers/userHandler.js');
 
 const db = new Database();
 const app = express();
+
+const uploadPath = __dirname + '/uploads';
 
 //Middleware
 app.use(bodyParser.json());
@@ -48,6 +52,39 @@ app.get('/test-get-users', (req, res) => {
     Helpers.log(err, 'R');
     res.status(500).send(err);
   });
+});
+
+app.post('/upload', (req, res) => {
+  let form = new formidable.IncomingForm();
+  Helpers.log('Upload path called', 'C');
+  try {
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        throw err;
+      } else {
+        const token = Helpers.token();
+        const extension = Helpers.getExtension(files.uploadFile.name);
+        Helpers.log(`Writing: ${token}.${extension}`, 'C');
+
+        const user = fields.username;
+        const purpose = fields.purpose;
+        
+        const oldPath = files.uploadFile.path;
+        const newPath = `${uploadPath}/${token}.${extension}`;
+        fs.rename(oldPath, newPath, (err) => {
+          if (err) {
+            throw err;
+          } else {
+            // Should send back token
+            Helpers.log('File write successful', 'G');
+            res.status(200).end(`${token}.${extension}`);
+          }
+        })
+      }
+    });
+  } catch (e) {
+    res.status(500).end(e.message);
+  }
 });
 
 /**

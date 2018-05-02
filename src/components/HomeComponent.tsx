@@ -16,6 +16,7 @@ class HomeComponent extends React.Component<IHomeProps, {}> {
 
     return (<div className='home-wrapper'>
       <h2>{ `Hello ${username}.` }</h2>
+      <button><Link to="settings">User Settings</Link></button>
     </div>);
   }
 }
