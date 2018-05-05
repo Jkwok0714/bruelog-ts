@@ -29,6 +29,9 @@ class Helpers {
   }
 
   public static setUserData (data) {
+    if (data.passcode) {
+      delete data.passcode;
+    }
     window.sessionStorage.userData = JSON.stringify(data);
   }
 

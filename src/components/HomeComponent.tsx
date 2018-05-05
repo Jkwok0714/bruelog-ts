@@ -1,3 +1,4 @@
+import { BASE_URL } from 'constants/';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Link, withRouter } from 'react-router-dom';
@@ -17,7 +18,7 @@ class HomeComponent extends React.Component<IHomeProps, {}> {
 
     return (<div className='home-wrapper'>
       <h2>{ `Hello ${username}.` }</h2>
-      { user.image }
+      {user.image && <img src={`${ BASE_URL }/uploads/${ user.username }/${ user.image }`} />}
       <button><Link to="settings">User Settings</Link></button>
     </div>);
   }

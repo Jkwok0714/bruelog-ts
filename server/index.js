@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const formidable = require('formidable');
 const fs = require('fs');
+const path = require('path');
 
 const Helpers = require('./helpers.js');
 const Database = require('./database/database.js').Database;
@@ -56,6 +57,10 @@ app.get('/test-get-users', (req, res) => {
   });
 });
 
+app.get('/uploads/:uploader/:imageName', (req, res) => {
+  res.sendFile(path.join(uploadPath, req.params.uploader, req.params.imageName));
+});
+
 app.post('/upload', (req, res) => {
   let form = new formidable.IncomingForm();
   Helpers.log('Upload path called', 'C');
@@ -70,20 +75,29 @@ app.post('/upload', (req, res) => {
 
         const user = fields.username;
         const purpose = fields.purpose;
+        const filename = `${token}.${extension}`;
+        const uploadPathWithUsername = `${uploadPath}/${user}`;
 
-        if (purpose === 'userImage') UserActions.assignImage(`${token}.${extension}`, user, uploadPath, db);
+        if (purpose === 'userImage') UserActions.assignImage(filename, user, uploadPathWithUsername, db);
 
         const oldPath = files.uploadFile.path;
-        const newPath = `${uploadPath}/${token}.${extension}`;
-        fs.rename(oldPath, newPath, (err) => {
-          if (err) {
+        const newPath = `${uploadPathWithUsername}/${filename}`;
+
+        fs.mkdir(uploadPathWithUsername, (err) => {
+          if (err && err.code !== 'EEXIST') {
             throw err;
           } else {
-            // Should send back token
-            Helpers.log('File write successful', 'G');
-            res.status(200).end(`${token}.${extension}`);
+            fs.rename(oldPath, newPath, (err) => {
+              if (err) {
+                throw err;
+              } else {
+                // Should send back token
+                Helpers.log('File write successful', 'G');
+                res.status(200).end(`${token}.${extension}`);
+              }
+            });
           }
-        })
+        });
       }
     });
   } catch (e) {

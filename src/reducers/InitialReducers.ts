@@ -1,3 +1,5 @@
+import Helpers from 'helpers/Helpers';
+
 // Reducers
 class InitialReducer {
   public static reducer (state = InitialReducer.initialState, action) {
@@ -12,7 +14,9 @@ class InitialReducer {
       case 'changeUser':
         return Object.assign({}, state, {user: action.user});
       case 'changeUserProperty':
-        return Object.assign({}, state, {user: Object.assign(state.user, action.property)});
+        const updatedUser = Object.assign(state.user, action.property);
+        Helpers.setUserData(updatedUser);
+        return Object.assign({}, state, {user: updatedUser});
       default:
         return state;
     }
