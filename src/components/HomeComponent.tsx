@@ -12,10 +12,12 @@ interface IHomeProps {
 class HomeComponent extends React.Component<IHomeProps, {}> {
   public render () {
     const { message, user } = this.props;
+    window.console.log(user);
     const username = user ? user.username : '';
 
     return (<div className='home-wrapper'>
       <h2>{ `Hello ${username}.` }</h2>
+      { user.image }
       <button><Link to="settings">User Settings</Link></button>
     </div>);
   }

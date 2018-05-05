@@ -18,6 +18,13 @@ class LoginActions {
       user
     }
   }
+
+  public static changeUserProperty = (property = {}) => {
+    return {
+      property,
+      type: 'changeUserProperty'
+    }
+  }
 }
 
 export default LoginActions;

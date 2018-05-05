@@ -78,7 +78,7 @@ class Database {
   testGetUsers () {
     return new Promise((resolve, reject) => {
       Helpers.log('Running test get users query', 'C');
-      this.db.all('SELECT id, name FROM users', (err, rows) => {
+      this.db.all('SELECT * FROM users', (err, rows) => {
         if (err) {
           Helpers.log(`Query error: ${err.message}`, 'R');
           reject(err.message);

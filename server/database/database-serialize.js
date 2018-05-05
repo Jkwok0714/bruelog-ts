@@ -1,6 +1,6 @@
 const createSchema = (db) => {
   db.serialize(() => {
-    db.run('CREATE TABLE users (id integer PRIMARY KEY, username text UNIQUE, passcode text)');
+    db.run('CREATE TABLE users (id integer PRIMARY KEY, username text UNIQUE, passcode text, image text)');
   });
 };
 

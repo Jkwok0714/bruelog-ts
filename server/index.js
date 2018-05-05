@@ -7,6 +7,7 @@ const fs = require('fs');
 
 const Helpers = require('./helpers.js');
 const Database = require('./database/database.js').Database;
+const UserActions = require('./actions/UserActions');
 const Constants = require('./constants.js');
 
 const UserHandler = require('./requestHandlers/userHandler.js');
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use((req, res, next) => {
+    Helpers.log(`-${req.method} REQUEST: ${req.url}`, 'C')
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -68,7 +70,9 @@ app.post('/upload', (req, res) => {
 
         const user = fields.username;
         const purpose = fields.purpose;
-        
+
+        if (purpose === 'userImage') UserActions.assignImage(`${token}.${extension}`, user, uploadPath, db);
+
         const oldPath = files.uploadFile.path;
         const newPath = `${uploadPath}/${token}.${extension}`;
         fs.rename(oldPath, newPath, (err) => {

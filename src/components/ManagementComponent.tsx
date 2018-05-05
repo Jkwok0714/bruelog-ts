@@ -1,7 +1,9 @@
+import LoginActions from 'actions/LoginActions';
 import APIService from 'helpers/APIService';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+
 
 const UPLOAD_PATH = 'upload';
 
@@ -16,6 +18,7 @@ class ManagementComponent extends React.Component<any, any> {
         <input onChange={this.handleFileSelect} type='file' name='uploadFile' />
         <input type='submit' />
       </form>
+      <button><Link to="">Back</Link></button>
     </div>;
   }
 
@@ -39,8 +42,12 @@ class ManagementComponent extends React.Component<any, any> {
     data.append('username', this.props.user.username);
     data.append('purpose', 'userImage');
 
-    APIService.post(UPLOAD_PATH, data).then(res => {
+    APIService.post(UPLOAD_PATH, data).then((res: any) => {
       // stuff
+      window.console.log(res.data);
+      this.props.changeUserProperty({
+        image: res.data
+      });
     }).catch(err => {
       // other stuff
     });
@@ -53,4 +60,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(ManagementComponent as React.ComponentClass<any>));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeUserProperty: (property) => dispatch(LoginActions.changeUserProperty(property))
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ManagementComponent as React.ComponentClass<any>));
