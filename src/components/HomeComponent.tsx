@@ -18,7 +18,7 @@ class HomeComponent extends React.Component<IHomeProps, {}> {
 
     return (<div className='home-wrapper'>
       <h2>{ `Hello ${username}.` }</h2>
-      {user.image && <img src={`${ BASE_URL }/uploads/${ user.username }/${ user.image }`} />}
+      {user.image && <img src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
       <button><Link to="settings">User Settings</Link></button>
     </div>);
   }

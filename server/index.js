@@ -71,9 +71,10 @@ app.post('/upload', (req, res) => {
       } else {
         const token = Helpers.token();
         const extension = Helpers.getExtension(files.uploadFile.name);
-        Helpers.log(`Writing: ${token}.${extension} for uid#${req.get('userID')}`, 'C');
+        const user = req.get('userID');
 
-        const user = fields.username;
+        Helpers.log(`Writing: ${token}.${extension} for uid#${user}`, 'C');
+
         const purpose = fields.purpose;
         const filename = `${token}.${extension}`;
         const uploadPathWithUsername = `${uploadPath}/${user}`;
