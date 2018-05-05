@@ -28,16 +28,6 @@ class LoginComponent extends React.Component<ILoginComponentProps, ILoginCompone
     username: ''
   };
 
-  public componentDidMount () {
-    const { changeLoginState, changeUser } = this.props;
-
-    const loginCache = Helpers.readUserData();
-    if (loginCache) {
-      changeLoginState(true);
-      changeUser(loginCache);
-    }
-  }
-
   public render () {
     const { username, passcode } = this.state;
     const { message } = this.props;

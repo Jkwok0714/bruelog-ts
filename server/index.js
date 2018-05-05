@@ -18,7 +18,7 @@ const app = express();
 
 const uploadPath = __dirname + '/uploads';
 
-//Middleware
+// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
     Helpers.log(`-${req.method} REQUEST: ${req.url}`, 'C')
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,userID');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
@@ -71,7 +71,7 @@ app.post('/upload', (req, res) => {
       } else {
         const token = Helpers.token();
         const extension = Helpers.getExtension(files.uploadFile.name);
-        Helpers.log(`Writing: ${token}.${extension}`, 'C');
+        Helpers.log(`Writing: ${token}.${extension} for uid#${req.get('userID')}`, 'C');
 
         const user = fields.username;
         const purpose = fields.purpose;
@@ -119,6 +119,7 @@ app.post('/login', (req, res) => {
   UserHandler.handleLogin(req, res, db);
 });
 
+// Start the server
 db.initialize().then(() => {
   app.listen(Constants.PORT_NUMBER, () => {
     Helpers.log(`Server listening on port ${Constants.PORT_NUMBER}`, 'C');

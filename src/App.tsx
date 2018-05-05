@@ -1,3 +1,6 @@
+import LoginActions from 'actions/LoginActions';
+import Helpers from 'helpers/Helpers';
+
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -12,11 +15,20 @@ import SignupComponent from './components/SignupComponent';
 
 interface IAppProps {
   loggedIn: boolean;
+  changeLoginState: (loginState: boolean) => void;
+  changeMessage: (message: string) => void;
+  changeUser: (user: object) => void;
 }
 
 class App extends React.Component<IAppProps, {}> {
   public componentDidMount () {
-      window.console.log('LoggedIn', this.props.loggedIn);
+      const { changeLoginState, changeUser } = this.props;
+
+      const loginCache = Helpers.readUserData();
+      if (loginCache) {
+        changeLoginState(true);
+        changeUser(loginCache);
+      }
   }
 
   public render() {
@@ -47,4 +59,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default withRouter(connect(mapStateToProps)(App as React.ComponentClass<any>));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeLoginState: (loginState) => dispatch(LoginActions.changeLoginState(loginState)),
+    changeMessage: (message) => dispatch(LoginActions.changeMessage(message)),
+    changeUser: (user) => dispatch(LoginActions.changeUser(user))
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App as React.ComponentClass<any>));

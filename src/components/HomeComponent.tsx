@@ -13,7 +13,7 @@ interface IHomeProps {
 class HomeComponent extends React.Component<IHomeProps, {}> {
   public render () {
     const { message, user } = this.props;
-    window.console.log(user);
+
     const username = user ? user.username : '';
 
     return (<div className='home-wrapper'>
