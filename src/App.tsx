@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Link, Route, withRouter } from 'react-router-dom';
 
 import './App.css';
+import DictionaryComponent from './components/DictionaryComponent';
 import HomeComponent from './components/HomeComponent';
 import LogEntryComponent from './components/LogEntryComponent';
 import LoginComponent from './components/LoginComponent';
@@ -41,6 +42,7 @@ class App extends React.Component<IAppProps, {}> {
               <Route exact={true} path='/' component={ HomeComponent }/>
               <Route exact={true} path='/settings' component={ ManagementComponent }/>
               <Route exact={true} path='/entry' component={ LogEntryComponent }/>
+              <Route exact={true} path='/dictionary' component={ DictionaryComponent }/>
             </div>
         ) : (
             <div>

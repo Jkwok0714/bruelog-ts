@@ -5,12 +5,12 @@ import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 
 import './styles/home.css';
 
-interface IHomeProps {
+interface IHomeComponentProps {
   message: string;
   user: any;
 }
 
-class HomeComponent extends React.Component<IHomeProps, {}> {
+class HomeComponent extends React.Component<IHomeComponentProps, {}> {
   public render () {
     const { message, user } = this.props;
 
@@ -20,6 +20,7 @@ class HomeComponent extends React.Component<IHomeProps, {}> {
       <h2>{ `Hello ${username}.` }</h2>
       {user.image && <img src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
       <button><Link to="settings">User Settings</Link></button>
+      <button><Link to="dictionary">Ingredient Dictionary</Link></button>
     </div>);
   }
 }

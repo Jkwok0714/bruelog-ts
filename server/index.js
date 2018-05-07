@@ -73,6 +73,11 @@ app.post('/upload', (req, res) => {
         const extension = Helpers.getExtension(files.uploadFile.name);
         const user = req.get('userID');
 
+        console.log(files.uploadFile.size);
+        if (files.uploadFile.size >= Constants.MAX_FILESIZE) {
+          throw new Error('Filesize is too large');
+        }
+
         Helpers.log(`Writing: ${token}.${extension} for uid#${user}`, 'C');
 
         const purpose = fields.purpose;
