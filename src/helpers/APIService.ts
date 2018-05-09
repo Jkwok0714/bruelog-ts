@@ -40,6 +40,27 @@ class APIService {
     });
   }
 
+  public static put (path: string, data: ILooseObject) {
+    return new Promise ((resolve, reject) => {
+      const composedURL = `${BASE_URL}/${path}`;
+      const config = {
+        headers: {
+          userID: this.getUserData()
+        }
+      };
+      window.console.log('POST to', composedURL, data);
+      axios.put(composedURL, data, config).then(res => {
+        window.console.log('Posted', res);
+        // Do something
+        resolve(res as IAPIResponse);
+      }).catch(err => {
+        window.console.log('Error posting', err.message);
+        // Do something else
+        reject(err);
+      });
+    })
+  };
+
   private static getUserData () {
     try {
       const storeState = (store as any).getState();

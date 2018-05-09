@@ -1,3 +1,7 @@
+import APIService from 'helpers/APIService';
+
+const DICTIONARY_PATH = 'dictionary';
+
 class Helpers {
   public static readCookie (cookieName: string) {
     const nameEq = cookieName + "=";
@@ -41,6 +45,14 @@ class Helpers {
     } catch (e) {
       return null;
     }
+  }
+
+  public static getDictionaryData (userID?: number) {
+    return new Promise ((resolve, reject) => {
+      APIService.get(DICTIONARY_PATH).then((res: any) => {
+        resolve(res.data);
+      }).catch(err => reject(err));
+    })
   }
 }
 

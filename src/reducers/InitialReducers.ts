@@ -17,12 +17,15 @@ class InitialReducer {
         const updatedUser = Object.assign(state.user, action.property);
         Helpers.setUserData(updatedUser);
         return Object.assign({}, state, {user: updatedUser});
+      case 'changeDictionaryData':
+        return Object.assign({}, state, {dictionary: action.data});
       default:
         return state;
     }
   };
 
   private static initialState = {
+    dictionary: null,
     loggedIn: false,
     message: null,
     user: {}

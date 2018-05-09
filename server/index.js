@@ -12,6 +12,7 @@ const UserActions = require('./actions/UserActions');
 const Constants = require('./constants.js');
 
 const UserHandler = require('./requestHandlers/userHandler.js');
+const DictionaryHandler = require('./requestHandlers/dictionaryHandler.js');
 
 const db = new Database();
 const app = express();
@@ -61,6 +62,37 @@ app.get('/uploads/:uploader/:imageName', (req, res) => {
   res.sendFile(path.join(uploadPath, req.params.uploader, req.params.imageName));
 });
 
+
+app.put('/dictionary', (req, res) => {
+  DictionaryHandler.handleUpdateEntry(req, res, db);
+});
+
+app.post('/dictionary', (req, res) => {
+  DictionaryHandler.handleAddEntry(req, res, db);
+
+})
+
+app.get('/dictionary', (req, res) => {
+  DictionaryHandler.getUserDictionaries(req, res, db);
+})
+
+/**
+ * For handling a new user being created or modified
+ */
+app.post('/users', (req, res) => {
+  UserHandler.handleSignup(req, res, db);
+});
+
+/**
+ * For handling logins of users
+ */
+app.post('/login', (req, res) => {
+  UserHandler.handleLogin(req, res, db);
+});
+
+/**
+ * For handling uploaded Filesize
+ */
 app.post('/upload', (req, res) => {
   let form = new formidable.IncomingForm();
   Helpers.log('Upload path called', 'C');
@@ -109,20 +141,6 @@ app.post('/upload', (req, res) => {
   } catch (e) {
     res.status(500).end(e.message);
   }
-});
-
-/**
- * For handling a new user being created or modified
- */
-app.post('/users', (req, res) => {
-  UserHandler.handleSignup(req, res, db);
-});
-
-/**
- * For handling logins of users
- */
-app.post('/login', (req, res) => {
-  UserHandler.handleLogin(req, res, db);
 });
 
 // Start the server
