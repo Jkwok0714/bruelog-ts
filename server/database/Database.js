@@ -38,11 +38,12 @@ class Database {
   write (query, data) {
     return new Promise((resolve, reject) => {
       Helpers.log(`W-QUERY: ${query}`, 'C');
-      this.db.run(query, data, (err) => {
+      this.db.run(query, data, function (err) {
         if (err) {
           reject(err);
         } else {
-          resolve();
+          // console.log(this.lastID);
+          resolve(this.lastID);
         }
       });
     });

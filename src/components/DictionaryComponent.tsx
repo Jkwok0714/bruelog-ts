@@ -65,16 +65,26 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     this.setState({ display });
   }
 
-  private addNewEntry = () => {
+  private addNewEntry = (data: object) => {
     // Hi
+    APIService.post(DICTIONARY_PATH, data).then(res => {
+      window.console.log(res);
+    });
   }
 
-  private updateEntry = () => {
+  private updateEntry = (data: object) => {
     // Hi 2
+    APIService.put(DICTIONARY_PATH, data).then(res => {
+      window.console.log(res);
+    });
+  }
+
+  private toggleShowNewEntry = () => {
+    this.setState({ showingAddEntry: !this.state.showingAddEntry });
   }
 
   private getDictionaryBlock () {
-    const { display } = this.state;
+    const { display, showingAddEntry } = this.state;
 
     let dictionaryData = '';
 
@@ -91,11 +101,12 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     return (
       <div className='dictionary-list'>
         {data.map(entry => {
-            return <DictionaryEntryComponent key={entry} item={entry} />
+            return <DictionaryEntryComponent key={entry.id} item={entry} onSubmit={this.updateEntry} type={dictionaryData}/>
           })
         }
         <div>
-          <button onClick={this.addNewEntry}>Add a new entry</button>
+          <button onClick={this.toggleShowNewEntry}>{showingAddEntry ? 'Cancel' : 'Add Entry'}</button>
+          {showingAddEntry && <DictionaryEntryComponent editing={true} onSubmit={this.addNewEntry} type={dictionaryData}/>}
         </div>
       </div>
     );

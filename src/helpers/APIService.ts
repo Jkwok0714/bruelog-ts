@@ -30,7 +30,12 @@ class APIService {
   public static get (path: string) {
     return new Promise((resolve, reject) => {
       const composedURL = `${BASE_URL}/${path}`;
-      axios.get(composedURL).then(res => {
+      const config = {
+        headers: {
+          userID: this.getUserData()
+        }
+      };
+      axios.get(composedURL, config).then(res => {
         // Do something
         resolve(res as IAPIResponse);
       }).catch(err => {
@@ -48,13 +53,13 @@ class APIService {
           userID: this.getUserData()
         }
       };
-      window.console.log('POST to', composedURL, data);
+      window.console.log('PUT to', composedURL, data);
       axios.put(composedURL, data, config).then(res => {
-        window.console.log('Posted', res);
+        window.console.log('PUT', res);
         // Do something
         resolve(res as IAPIResponse);
       }).catch(err => {
-        window.console.log('Error posting', err.message);
+        window.console.log('Error putting', err.message);
         // Do something else
         reject(err);
       });
