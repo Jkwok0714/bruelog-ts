@@ -1,11 +1,15 @@
+import DataActions from 'actions/DataActions';
 import { BASE_URL } from 'constants/';
+import APIService from 'helpers/APIService';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 
-import HopDictionary from './subcomponents/HopDictionary';
-import MaltDictionary from './subcomponents/MaltDictionary';
-import YeastDictionary from './subcomponents/YeastDictionary';
+// import HopDictionary from './subcomponents/HopDictionary';
+// import MaltDictionary from './subcomponents/MaltDictionary';
+// import YeastDictionary from './subcomponents/YeastDictionary';
+import DictionaryEntryComponent from './subcomponents/DictionaryEntryComponent';
+const DICTIONARY_PATH = 'dictionary';
 
 const VIEWS = {
   HOPS: 1,
@@ -16,16 +20,31 @@ const VIEWS = {
 interface IDictionaryComponentProps {
   message: string;
   user: any;
+  dictionary: object;
+
+  applyDictionaryData: (data) => void;
 }
 
 interface IDictionaryComponentState {
   display: number;
+
+  showingAddEntry: boolean;
 }
 
 class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDictionaryComponentState> {
   public state = {
-    display: VIEWS.HOPS
+    display: VIEWS.HOPS,
+    showingAddEntry: false
   };
+
+  public componentWillMount () {
+    APIService.get(DICTIONARY_PATH).then((data: any) => {
+      // window.console.log(data.data);
+      this.props.applyDictionaryData(data.data);
+    }).catch(err => {
+      // handle error
+    });
+  }
 
   public render () {
     const { message, user } = this.props;
@@ -46,26 +65,55 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     this.setState({ display });
   }
 
+  private addNewEntry = () => {
+    // Hi
+  }
+
+  private updateEntry = () => {
+    // Hi 2
+  }
+
   private getDictionaryBlock () {
     const { display } = this.state;
 
+    let dictionaryData = '';
+
     if (display === VIEWS.HOPS) {
-      return <HopDictionary />;
+      dictionaryData = 'hops';
     } else if (display === VIEWS.MALTS) {
-      return <MaltDictionary />;
+      dictionaryData = 'malts';
     } else if (display === VIEWS.YEAST) {
-      return <YeastDictionary />;
-    } else {
-      return <div />;
+      dictionaryData = 'yeast';
     }
+
+    const data = this.props.dictionary[dictionaryData];
+
+    return (
+      <div className='dictionary-list'>
+        {data.map(entry => {
+            return <DictionaryEntryComponent key={entry} item={entry} />
+          })
+        }
+        <div>
+          <button onClick={this.addNewEntry}>Add a new entry</button>
+        </div>
+      </div>
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    dictionary: state.dictionary,
     message: state.message,
     user: state.user
   };
 };
 
-export default withRouter(connect(mapStateToProps)(DictionaryComponent as React.ComponentClass<any>));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    applyDictionaryData: (dictionary) => dispatch(DataActions.applyDictionaryData(dictionary))
+  };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DictionaryComponent as React.ComponentClass<any>));

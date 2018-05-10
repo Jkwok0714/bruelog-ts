@@ -64,7 +64,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeDictionaryData: (data) => dispatch(DataActions.changeDictionaryData(data)),
+    applyDictionaryData: (data) => dispatch(DataActions.applyDictionaryData(data)),
     changeLoginState: (loginState) => dispatch(LoginActions.changeLoginState(loginState)),
     changeMessage: (message) => dispatch(LoginActions.changeMessage(message)),
     changeUser: (user) => dispatch(LoginActions.changeUser(user))

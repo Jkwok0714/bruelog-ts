@@ -1,8 +1,8 @@
 // Actions
 class DataActions {
-  public static changeDictionaryData = (data = '') => ({
+  public static applyDictionaryData = (data = '') => ({
     data,
-    type: 'changeDictionaryData'
+    type: 'applyDictionaryData'
   });
 }
 

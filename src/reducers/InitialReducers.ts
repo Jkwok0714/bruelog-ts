@@ -1,5 +1,10 @@
 import Helpers from 'helpers/Helpers';
 
+const emptyDictionary = {
+  hops: [],
+  malts: [],
+  yeast: []
+};
 // Reducers
 class InitialReducer {
   public static reducer (state = InitialReducer.initialState, action) {
@@ -17,7 +22,7 @@ class InitialReducer {
         const updatedUser = Object.assign(state.user, action.property);
         Helpers.setUserData(updatedUser);
         return Object.assign({}, state, {user: updatedUser});
-      case 'changeDictionaryData':
+      case 'applyDictionaryData':
         return Object.assign({}, state, {dictionary: action.data});
       default:
         return state;
@@ -25,7 +30,7 @@ class InitialReducer {
   };
 
   private static initialState = {
-    dictionary: null,
+    dictionary: emptyDictionary,
     loggedIn: false,
     message: null,
     user: {}
