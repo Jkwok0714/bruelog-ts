@@ -1,12 +1,5 @@
+import { IDictionaryEntry } from 'constants/datatypes';
 import * as React from 'react';
-
-interface IDictionaryEntry {
-  description: string;
-  flavors: string;
-  id?: number;
-  name: string;
-  type?: string;
-}
 
 interface IDictionaryEntryComponentProps {
   onSubmit: (data: object) => void;

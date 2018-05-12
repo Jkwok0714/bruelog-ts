@@ -1,5 +1,6 @@
 import DataActions from 'actions/DataActions';
 import { BASE_URL } from 'constants/';
+import { IDictionary, IDictionaryCategory, IDictionaryEntry } from 'constants/datatypes';
 import APIService from 'helpers/APIService';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -12,27 +13,6 @@ const VIEWS = {
   HOPS: 1,
   MALTS: 2,
   YEAST: 3
-}
-
-interface IDictionaryCategory {
-  malts?: object[];
-  hops?: object[];
-  yeast?: object[];
-}
-
-interface IDictionaryEntry {
-  description: string;
-  flavors: string;
-  id?: number;
-  name: string;
-  type?: string;
-}
-
-interface IDictionary {
-  hops: IDictionaryEntry[];
-  malts: IDictionaryEntry[];
-  update: number;
-  yeast: IDictionaryEntry[];
 }
 
 interface IDictionaryComponentProps {
@@ -57,20 +37,6 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     showingAddEntry: false,
     showingDictionary: []
   };
-
-  public componentWillMount () {
-    APIService.get(DICTIONARY_PATH).then((data: any) => {
-      // window.console.log(data.data);
-      this.props.applyDictionaryData(data.data);
-      this.setState({ showingDictionary: data.data[this.getTypeString(VIEWS.HOPS)] })
-    }).catch(err => {
-      // handle error
-    });
-  }
-
-  public componentWillReceiveProps (newProps) {
-    window.console.log('curr props', newProps);
-  }
 
   public render () {
     const { message, user, dictionary } = this.props;

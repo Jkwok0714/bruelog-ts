@@ -28,6 +28,13 @@ class LoginComponent extends React.Component<ILoginComponentProps, ILoginCompone
     username: ''
   };
 
+  public componentDidMount () {
+    const cookieName = Helpers.readCookie(LOGIN_COOKIE_NAME);
+    if (cookieName) {
+      this.setState({ username: cookieName });
+    }
+  }
+
   public render () {
     const { username, passcode } = this.state;
     const { message } = this.props;
@@ -40,12 +47,14 @@ class LoginComponent extends React.Component<ILoginComponentProps, ILoginCompone
               onChange={(e) => this.onChange('username', e)}
               placeholder='Username'
               type='text'
+              name='username'
               value={username}
             />
             <input
               onChange={(e) => this.onChange('passcode', e)}
               placeholder='PIN'
               type='password'
+              name='password'
               maxLength={4} pattern="\d*"
               value={passcode}
             />
@@ -77,6 +86,7 @@ class LoginComponent extends React.Component<ILoginComponentProps, ILoginCompone
       changeLoginState(true);
       changeUser(res.data);
       Helpers.setUserData(res.data);
+      Helpers.setCookie('LOGIN_COOKIE_NAME', username, 720);
     }).catch(err => {
       // Fail
       changeMessage(`${Messages.loginFailed}: ${err.message}`);
