@@ -4,6 +4,11 @@ class DataActions {
     data,
     type: 'applyDictionaryData'
   });
+
+  public static updateDictionary = (data) => ({
+    data,
+    type: 'updateDictionary'
+  });
 }
 
 export default DataActions;

@@ -24,6 +24,9 @@ class InitialReducer {
         return Object.assign({}, state, {user: updatedUser});
       case 'applyDictionaryData':
         return Object.assign({}, state, {dictionary: action.data});
+      case 'updateDictionary':
+        const dictionaryNewData = Object.assign(state.dictionary, action.data);
+        return Object.assign({}, state, { dictionary: dictionaryNewData });
       default:
         return state;
     }

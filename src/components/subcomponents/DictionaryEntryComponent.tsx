@@ -96,7 +96,7 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
       name,
       type: this.props.type
     });
-
+    this.setState({ editing: false });
   }
 
   private onChange (key: string, e: React.FormEvent<HTMLInputElement>) {
