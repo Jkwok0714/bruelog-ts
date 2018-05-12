@@ -101,8 +101,6 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
 
     const data = this.props.dictionary[dictionaryData];
 
-    window.console.log(data);
-
     // For some reason the items weren't updating correctly. Ensure list is re-rendered
     this.setState({ display, showingDictionary: [] }, () => {
       this.setState({ showingDictionary: data });
