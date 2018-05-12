@@ -16,7 +16,6 @@ const handleAddEntry = (req, res, db) => {
 };
 
 const handleUpdateEntry = (req, res, db) => {
-  console.log(req.body);
   const body = req.body;
   db.write(`UPDATE ${body.type} SET name=?, flavors=?, description=? WHERE id=?`,
     [body.name, body.flavors, body.description, body.id]).then(data => {
@@ -27,6 +26,16 @@ const handleUpdateEntry = (req, res, db) => {
     res.status(500).send(`Error occured: ${err.message}`);
   });
 };
+
+const handleDeleteEntry = (req, res, db) => {
+  const body = req.body;
+  db.delete(`DELETE FROM ${body.type} WHERE id=?`, body.id).then(data => {
+    res.status(200).send({data});
+  }).catch(err => {
+    Helpers.log(err.message, 'R');
+    res.status(500).send(`Error occured: ${err.message}`);
+  });
+}
 
 const getUserDictionaries = (req, res, db) => {
   let dataPackage = {};
@@ -49,5 +58,6 @@ const getUserDictionaries = (req, res, db) => {
 module.exports = {
   handleAddEntry,
   handleUpdateEntry,
+  handleDeleteEntry,
   getUserDictionaries
 };

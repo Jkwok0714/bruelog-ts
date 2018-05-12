@@ -1,10 +1,19 @@
 import * as React from 'react';
 
+interface IDictionaryEntry {
+  description: string;
+  flavors: string;
+  id?: number;
+  name: string;
+  type?: string;
+}
+
 interface IDictionaryEntryComponentProps {
   onSubmit: (data: object) => void;
   type: string;
 
-  item?: object;
+  onDelete?: (type: string, id: number) => void;
+  item?: IDictionaryEntry;
   editing?: boolean;
 }
 
@@ -66,6 +75,7 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
               <input type='submit' value='Submit' />
             </form>
             {!this.props.editing && <button onClick={this.toggleEdit}>Cancel</button>}
+            {!this.props.editing && <button onClick={this.handleDelete}>Delete</button>}
           </div>
         ) : (
           <div>
@@ -77,6 +87,16 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
         )}
       </div>
     );
+  }
+
+  private handleDelete = () => {
+    if (!this.props.item || !this.props.onDelete) {
+      return;
+    }
+    const id = this.props.item.id || 0;
+    const { type } = this.props;
+
+    this.props.onDelete(type, id);
   }
 
   private toggleEdit = () => {

@@ -31,13 +31,14 @@ interface IDictionaryEntry {
 interface IDictionary {
   hops: IDictionaryEntry[];
   malts: IDictionaryEntry[];
+  update: number;
   yeast: IDictionaryEntry[];
 }
 
 interface IDictionaryComponentProps {
   message: string;
   user: any;
-  dictionary: object;
+  dictionary: IDictionary;
 
   applyDictionaryData: (data) => void;
   updateDictionary: (data: IDictionaryCategory) => void;
@@ -68,14 +69,16 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
   }
 
   public componentWillReceiveProps (newProps) {
-    // window.console.log('New Props', newProps);
+    window.console.log('curr props', newProps);
   }
 
   public render () {
-    const { message, user } = this.props;
-    const { display, showingAddEntry, showingDictionary } = this.state;
+    const { message, user, dictionary } = this.props;
+    const { display, showingAddEntry } = this.state;
     const type = this.getTypeString(display);
     const username = user ? user.username : '';
+
+    const dictionaryDisplay = dictionary[this.getTypeString(display)];
 
     return (<div className='dictionary-wrapper'>
       <button onClick={() => this.changeView(VIEWS.HOPS)}>Hops</button>
@@ -83,8 +86,8 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
       <button onClick={() => this.changeView(VIEWS.YEAST)}>Yeast</button>
 
       <div className='dictionary-list'>
-        {showingDictionary.map((entry: IDictionaryEntry) => {
-            return <DictionaryEntryComponent key={entry.id} item={entry} onSubmit={this.updateEntry} type={type}/>
+        {dictionaryDisplay.map((entry: IDictionaryEntry) => {
+            return <DictionaryEntryComponent key={entry.id+entry.name} item={entry} onSubmit={this.updateEntry} onDelete={this.deleteEntry} type={type}/>
           })
         }
         <div>
@@ -93,18 +96,19 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
         </div>
       </div>
       <button><Link to="">Back</Link></button>
+      { dictionary.update }
     </div>);
   }
 
   private changeView (display: number) {
-    const dictionaryData = this.getTypeString(display);
-
-    const data = this.props.dictionary[dictionaryData];
+    // const dictionaryData = this.getTypeString(display);
+    // const data = this.props.dictionary[dictionaryData];
 
     // For some reason the items weren't updating correctly. Ensure list is re-rendered
-    this.setState({ display, showingDictionary: [] }, () => {
-      this.setState({ showingDictionary: data });
-    });
+    // this.setState({ display, showingDictionary: [] }, () => {
+    //   this.setState({ showingDictionary: data });
+    // });
+    this.setState({display});
   }
 
   private getTypeString (display: number) {
@@ -130,15 +134,17 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
       newDictionary[index] = data;
     } else {
       newDictionary.push(data);
+      // this.setState({ showingDictionary: newDictionary });
     }
 
-    return { [editType]: newDictionary};
+    return { [editType]: newDictionary };
   }
 
   private addNewEntry = (data: IDictionaryEntry) => {
     APIService.post(DICTIONARY_PATH, data).then(res => {
       data.id = (res as any).data.id;
-      this.props.updateDictionary(this.constructNewData(data, false));
+      const newData = this.constructNewData(data, false);
+      this.props.updateDictionary(newData);
       this.setState({ showingAddEntry: false });
     }).catch(err => {
       window.console.error('Error posting new entry', err.message);
@@ -155,6 +161,16 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
 
   private toggleShowNewEntry = () => {
     this.setState({ showingAddEntry: !this.state.showingAddEntry });
+  }
+
+  private deleteEntry = (type: string, id: number) => {
+    APIService.delete(DICTIONARY_PATH, {id, type}).then(res => {
+      const newDict = this.props.dictionary[type].filter(ele => ele.id !== id);
+      this.props.updateDictionary({[type]: newDict});
+      // this.setState({ showingDictionary: newDict });
+    }).catch(err => {
+      window.console.error('Error deleting new entry', err.message);
+    });
   }
 }
 

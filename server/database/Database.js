@@ -62,8 +62,18 @@ class Database {
     });
   }
 
-  delete (query) {
-
+  delete (query, data) {
+    return new Promise((resolve, reject) => {
+      Helpers.log(`D-QUERY: ${query}`, 'C');
+      console.log(data);
+      this.db.run(query, data, function (err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(this.changes);
+        }
+      });
+    });
   }
 
   serialize () {

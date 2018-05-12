@@ -3,6 +3,7 @@ import Helpers from 'helpers/Helpers';
 const emptyDictionary = {
   hops: [],
   malts: [],
+  update: 0,
   yeast: []
 };
 // Reducers
@@ -25,7 +26,7 @@ class InitialReducer {
       case 'applyDictionaryData':
         return Object.assign({}, state, {dictionary: action.data});
       case 'updateDictionary':
-        const dictionaryNewData = Object.assign(state.dictionary, action.data);
+        const dictionaryNewData = Object.assign(state.dictionary, action.data, { update: Math.random() });
         return Object.assign({}, state, { dictionary: dictionaryNewData });
       default:
         return state;

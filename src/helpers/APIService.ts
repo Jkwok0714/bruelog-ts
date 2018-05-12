@@ -66,6 +66,28 @@ class APIService {
     })
   };
 
+  public static delete (path: string, data: ILooseObject) {
+    return new Promise ((resolve, reject) => {
+      const composedURL = `${BASE_URL}/${path}`;
+      const config = {
+        data,
+        headers: {
+          userID: this.getUserData()
+        }
+      };
+      window.console.log('DELETE to', composedURL, data);
+      axios.delete(composedURL, config).then(res => {
+        window.console.log('DELETE', res);
+        // Do something
+        resolve(res as IAPIResponse);
+      }).catch(err => {
+        window.console.log('Error deleting', err.message);
+        // Do something else
+        reject(err);
+      });
+    })
+  };
+
   private static getUserData () {
     try {
       const storeState = (store as any).getState();

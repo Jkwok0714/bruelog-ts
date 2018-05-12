@@ -69,8 +69,11 @@ app.put('/dictionary', (req, res) => {
 
 app.post('/dictionary', (req, res) => {
   DictionaryHandler.handleAddEntry(req, res, db);
+});
 
-})
+app.delete('/dictionary', (req, res) => {
+  DictionaryHandler.handleDeleteEntry(req, res, db);
+});
 
 app.get('/dictionary', (req, res) => {
   DictionaryHandler.getUserDictionaries(req, res, db);
