@@ -1,6 +1,15 @@
 const UsersTableName = 'users';
 const Helpers = require('../helpers.js');
 
+/**
+ * @module server/userHandler
+ */
+
+/**
+ * Handle logging in a user, check passcode
+ * Requires body params {@link handleLogin-requestBody}
+ * @function
+ */
 const handleLogin = (req, res, db) => {
   console.log(req.body);
   const body = req.body;
@@ -17,6 +26,11 @@ const handleLogin = (req, res, db) => {
   });
 };
 
+/**
+ * Handle signing up a user
+ * Requires body params {@link handleSignup-requestBody}
+ * @function
+ */
 const handleSignup = (req, res, db) => {
   console.log(req.body);
   const body = req.body;
@@ -32,3 +46,15 @@ module.exports = {
   handleLogin,
   handleSignup
 };
+
+/**
+ * @typedef module:userHandler~handleLogin-requestBody
+ * @property {string} username Login user's username
+ * @property {string} passcode Login user's passcode
+ */
+
+ /**
+  * @typedef module:userHandler~handleSignup-requestBody
+  * @property {string} username Login user's username
+  * @property {string} passcode Login user's passcode
+  */

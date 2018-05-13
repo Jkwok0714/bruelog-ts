@@ -4,11 +4,21 @@ const Constants = require('../constants.js');
 const Helpers = require('../helpers.js');
 const Serialize = require('./database-serialize.js');
 
+/**
+ * Database handler class that runs queries. One is instantiated with server to handle the DB connection.
+ * Currently takes in row queries to run, and methods are somewhat redundant
+ * @todo Potentially refactor into more useful ORM-like methods
+ * @class
+ */
 class Database {
   constructor () {
     this.db = null;
   }
 
+  /**
+   * Create the database connection
+   * @function
+   */
   initialize () {
     return new Promise ((resolve, reject) => {
       this.db = new sqlite.Database(Constants.DATABASE_FILE, (err) => {
@@ -23,6 +33,10 @@ class Database {
     });
   }
 
+  /**
+   * Close the database connection. When is this used?!?!
+   * @function
+   */
   close () {
     if (this.db) {
       this.db.close((err) => {
@@ -35,6 +49,13 @@ class Database {
     }
   }
 
+  /**
+   * Handle writing to the database. Used when the ID is needed in response
+   * @function
+   * @param {string} query SQL query to run
+   * @param {Array} data Data for SQL query
+   * @returns {number} ID of the newly inserted element
+   */
   write (query, data) {
     return new Promise((resolve, reject) => {
       Helpers.log(`W-QUERY: ${query}`, 'C');
@@ -49,6 +70,13 @@ class Database {
     });
   }
 
+  /**
+   * Handle reading from the database.
+   * @function
+   * @param {string} query SQL query to run
+   * @param {Array} data Data for SQL query
+   * @returns {Object|Array} Queried-for data
+   */
   read (query, data) {
     return new Promise((resolve, reject) => {
       Helpers.log(`R-QUERY: ${query}`, 'C');
@@ -62,6 +90,13 @@ class Database {
     });
   }
 
+  /**
+   * Handle deleting from the database.
+   * @function
+   * @param {string} query SQL query to run
+   * @param {Array} data Data for SQL query
+   * @returns {number} ID of the newly inserted element
+   */
   delete (query, data) {
     return new Promise((resolve, reject) => {
       Helpers.log(`D-QUERY: ${query}`, 'C');
@@ -76,16 +111,29 @@ class Database {
     });
   }
 
+  /**
+   * Serialize the database using DatabaseSerializer module.
+   * @function
+   * @requires ./database-serializer.js
+   */
   serialize () {
     Helpers.log('Creating schema', 'C');
     Serialize.createSchema(this.db);
   }
 
+  /**
+   * Dummy data maker
+   * @function
+   */
   populateDummyData () {
     Helpers.log('Populating dummy data', 'C');
     Serialize.populateDummyData(this.db);
   }
 
+  /**
+   * Used for initial testing to query db
+   * @function
+   */
   testGetUsers () {
     return new Promise((resolve, reject) => {
       Helpers.log('Running test get users query', 'C');

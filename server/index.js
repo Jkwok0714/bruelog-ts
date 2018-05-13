@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * The main server file
+ * @namespace Server
+ */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const formidable = require('formidable');
@@ -94,7 +99,9 @@ app.post('/login', (req, res) => {
 });
 
 /**
- * For handling uploaded Filesize
+ * For handling uploaded files
+ * @memberof Server
+ * @name upload
  */
 app.post('/upload', (req, res) => {
   let form = new formidable.IncomingForm();

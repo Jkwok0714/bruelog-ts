@@ -24,7 +24,8 @@
     "eject": "react-scripts-ts eject",
     "server": "node server/index.js",
     "server-dev": "nodemon server/index.js",
-    "init-db": "node server/database/init.js"
+    "init-db": "node server/database/init.js",
+    "document": "jsdoc server src -r -R README.md -d docs"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
