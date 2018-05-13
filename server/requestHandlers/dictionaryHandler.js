@@ -11,7 +11,7 @@ const Helpers = require('../helpers.js');
  * @todo In the future, these can be put together into an API handler route
  */
 const handleAddEntry = (req, res, db) => {
-  console.log(req.body);
+  // console.log(req.body);
   const body = req.body;
   const userID = req.get('userID');
   db.write(`INSERT INTO ${body.type}(userid, name, flavors, description) VALUES(?, ?, ?, ?)`,
@@ -59,6 +59,14 @@ const handleDeleteEntry = (req, res, db) => {
   });
 }
 
+const convertArrayToDataObject = (array) => {
+  let result = {};
+  for (let i = 0; i < array.length; i++) {
+    result[array[i].id] = array[i];
+  }
+  return result;
+}
+
 /**
  * Handle retrieving all of a user's dictionaries for use
  * @function
@@ -67,18 +75,18 @@ const handleDeleteEntry = (req, res, db) => {
 const getUserDictionaries = (req, res, db) => {
   let dataPackage = {};
   const userID = req.get('userID');
-  console.log('looking for user', userID);
+  // console.log('looking for user', userID);
   db.read('SELECT * FROM hops WHERE userid=? OR userid=?', [userID, 0]).then(data => {
-    dataPackage.hops = data;
+    dataPackage.hops = convertArrayToDataObject(data);
     return db.read('SELECT * FROM malts WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
-    dataPackage.malts = data;
+    dataPackage.malts = convertArrayToDataObject(data);
     return db.read('SELECT * FROM yeast WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
-    dataPackage.yeast = data;
+    dataPackage.yeast = convertArrayToDataObject(data);
     return db.read('SELECT * FROM other WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
-    dataPackage.other = data;
+    dataPackage.other = convertArrayToDataObject(data);
     res.status(200).send(dataPackage);
   }).catch(err => {
     res.status(500).send(`Error occured: ${err.message}`);

@@ -13,6 +13,7 @@ import HomeComponent from './components/HomeComponent';
 import LogEntryComponent from './components/LogEntryComponent';
 import LoginComponent from './components/LoginComponent';
 import ManagementComponent from './components/ManagementComponent';
+import RecipesComponent from './components/RecipesComponent';
 import SignupComponent from './components/SignupComponent';
 
 interface IAppProps {
@@ -44,6 +45,7 @@ class App extends React.Component<IAppProps, {}> {
               <Route exact={true} path='/settings' component={ ManagementComponent }/>
               <Route exact={true} path='/entry' component={ LogEntryComponent }/>
               <Route exact={true} path='/dictionary' component={ DictionaryComponent }/>
+              <Route exact={true} path='/recipes' component={ RecipesComponent }/>
             </div>
         ) : (
             <div>

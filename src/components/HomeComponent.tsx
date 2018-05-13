@@ -23,7 +23,6 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
   public componentWillMount () {
     // Get needed info for user that will be used across areas
     APIService.get(DICTIONARY_PATH).then((data: any) => {
-      // window.console.log(data.data);
       this.props.applyDictionaryData(data.data);
     }).catch(err => {
       // handle error
@@ -35,10 +34,12 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
     const username = user ? user.username : '';
 
     return (<div className='home-wrapper'>
-      <h2>{ `Hello ${username}.` }</h2>
+      <h1>{ `Hello ${username}.` }</h1>
       {user.image && <img src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
+
       <button><Link to="settings">User Settings</Link></button>
       <button><Link to="dictionary">Ingredient Dictionary</Link></button>
+      <button><Link to="recipes">Recipes</Link></button>
       <button onClick={this.logout}>Logout</button>
     </div>);
   }

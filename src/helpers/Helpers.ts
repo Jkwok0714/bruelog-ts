@@ -47,6 +47,10 @@ class Helpers {
     }
   }
 
+  public static objectValues (object) {
+    return Object.keys(object).map(key => object[key])
+  }
+
   public static getDictionaryData (userID?: number) {
     return new Promise ((resolve, reject) => {
       APIService.get(DICTIONARY_PATH).then((res: any) => {

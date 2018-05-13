@@ -2,6 +2,7 @@ import DataActions from 'actions/DataActions';
 import { BASE_URL } from 'constants/';
 import { IDictionary, IDictionaryCategory, IDictionaryEntry } from 'constants/datatypes';
 import APIService from 'helpers/APIService';
+import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Link, withRouter } from 'react-router-dom';
@@ -17,9 +18,9 @@ const VIEWS = {
 }
 
 interface IDictionaryComponentProps {
+  dictionary: IDictionary;
   message: string;
   user: any;
-  dictionary: IDictionary;
 
   applyDictionaryData: (data) => void;
   updateDictionary: (data: IDictionaryCategory) => void;
@@ -45,9 +46,12 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     const type = this.getTypeString(display);
     const username = user ? user.username : '';
 
-    const dictionaryDisplay = dictionary[this.getTypeString(display)];
+    const dictionaryObject = dictionary[this.getTypeString(display)];
+
+    const dictionaryDisplay = Helpers.objectValues(dictionaryObject);
 
     return (<div className='dictionary-wrapper'>
+      <h1>Ingredient Dictionary</h1>
       <button onClick={() => this.changeView(VIEWS.HOPS)}>Hops</button>
       <button onClick={() => this.changeView(VIEWS.MALTS)}>Malts</button>
       <button onClick={() => this.changeView(VIEWS.YEAST)}>Yeast</button>
@@ -86,17 +90,19 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
   private constructNewData (data: IDictionaryEntry, update: boolean) {
     const { dictionary } = this.props;
     const editType = data.type as string;
-    const newDictionary = dictionary[editType].slice(0);
+    const newDictionary = Object.assign(dictionary[editType], { [data.id as number]: data });
     delete data.type;
 
-    if (update) {
-      // This is an update
-      const index = newDictionary.map(o => o.id).indexOf(data.id);
-      newDictionary[index] = data;
-    } else {
-      newDictionary.push(data);
-      // this.setState({ showingDictionary: newDictionary });
-    }
+    // if (update) {
+    //   // This is an update
+    //   // const index = newDictionary.map(o => o.id).indexOf(data.id);
+    //   // newDictionary[index] = data;
+    //
+    // } else {
+    //   // newDictionary.push(data);
+    //
+    //   // this.setState({ showingDictionary: newDictionary });
+    // }
 
     return { [editType]: newDictionary };
   }

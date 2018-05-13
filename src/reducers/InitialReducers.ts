@@ -1,11 +1,11 @@
 import Helpers from 'helpers/Helpers';
 
 const emptyDictionary = {
-  hops: [],
-  malts: [],
-  other: [],
+  hops: {},
+  malts: {},
+  other: {},
   update: 0,
-  yeast: []
+  yeast: {}
 };
 // Reducers
 class InitialReducer {

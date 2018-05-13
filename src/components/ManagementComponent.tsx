@@ -11,7 +11,7 @@ class ManagementComponent extends React.Component<any, any> {
 
   public render () {
     return <div>
-      Management Component
+      <h1>Management Component</h1>
       <form onSubmit={this.onSubmit}>
         <input onChange={this.handleFileSelect} type='file' name='uploadFile' />
         <input type='submit' />
