@@ -12,6 +12,7 @@ const DICTIONARY_PATH = 'dictionary';
 const VIEWS = {
   HOPS: 1,
   MALTS: 2,
+  OTHER: 4,
   YEAST: 3
 }
 
@@ -50,6 +51,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
       <button onClick={() => this.changeView(VIEWS.HOPS)}>Hops</button>
       <button onClick={() => this.changeView(VIEWS.MALTS)}>Malts</button>
       <button onClick={() => this.changeView(VIEWS.YEAST)}>Yeast</button>
+      <button onClick={() => this.changeView(VIEWS.OTHER)}>Other</button>
 
       <div className='dictionary-list'>
         {dictionaryDisplay.map((entry: IDictionaryEntry) => {
@@ -67,13 +69,6 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
   }
 
   private changeView (display: number) {
-    // const dictionaryData = this.getTypeString(display);
-    // const data = this.props.dictionary[dictionaryData];
-
-    // For some reason the items weren't updating correctly. Ensure list is re-rendered
-    // this.setState({ display, showingDictionary: [] }, () => {
-    //   this.setState({ showingDictionary: data });
-    // });
     this.setState({display});
   }
 
@@ -85,7 +80,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     } else if (display === VIEWS.YEAST) {
       return 'yeast';
     }
-    return '';
+    return 'other';
   }
 
   private constructNewData (data: IDictionaryEntry, update: boolean) {

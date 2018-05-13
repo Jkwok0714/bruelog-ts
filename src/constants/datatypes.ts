@@ -12,9 +12,10 @@ export interface ILooseObject {
 }
 
 export interface IDictionaryCategory {
-  malts?: object[];
-  hops?: object[];
-  yeast?: object[];
+  malts?: IDictionaryEntry[];
+  hops?: IDictionaryEntry[];
+  yeast?: IDictionaryEntry[];
+  other?: IDictionaryEntry[];
 }
 
 export interface IDictionaryEntry {
@@ -30,4 +31,5 @@ export interface IDictionary {
   malts: IDictionaryEntry[];
   update: number;
   yeast: IDictionaryEntry[];
+  other: IDictionaryEntry[];
 }

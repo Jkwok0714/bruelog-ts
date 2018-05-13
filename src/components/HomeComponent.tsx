@@ -20,7 +20,6 @@ interface IHomeComponentProps {
 }
 
 class HomeComponent extends React.Component<IHomeComponentProps, {}> {
-
   public componentWillMount () {
     // Get needed info for user that will be used across areas
     APIService.get(DICTIONARY_PATH).then((data: any) => {
@@ -33,7 +32,6 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
 
   public render () {
     const { message, user } = this.props;
-
     const username = user ? user.username : '';
 
     return (<div className='home-wrapper'>

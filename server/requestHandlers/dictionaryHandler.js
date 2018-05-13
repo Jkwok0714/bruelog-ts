@@ -76,6 +76,9 @@ const getUserDictionaries = (req, res, db) => {
     return db.read('SELECT * FROM yeast WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
     dataPackage.yeast = data;
+    return db.read('SELECT * FROM other WHERE userid=? OR userid=?', [userID, 0]);
+  }).then(data => {
+    dataPackage.other = data;
     res.status(200).send(dataPackage);
   }).catch(err => {
     res.status(500).send(`Error occured: ${err.message}`);

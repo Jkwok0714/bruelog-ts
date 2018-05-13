@@ -3,6 +3,7 @@ import Helpers from 'helpers/Helpers';
 const emptyDictionary = {
   hops: [],
   malts: [],
+  other: [],
   update: 0,
   yeast: []
 };
