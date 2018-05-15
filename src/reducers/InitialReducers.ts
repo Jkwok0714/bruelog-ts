@@ -29,6 +29,8 @@ class InitialReducer {
       case 'updateDictionary':
         const dictionaryNewData = Object.assign(state.dictionary, action.data, { update: Math.random() });
         return Object.assign({}, state, { dictionary: dictionaryNewData });
+      case 'applyRecipeData':
+        return Object.assign({}, state, { recipes: action.data });
       default:
         return state;
     }
@@ -38,6 +40,7 @@ class InitialReducer {
     dictionary: emptyDictionary,
     loggedIn: false,
     message: null,
+    recipes: {},
     user: {}
   };
 }

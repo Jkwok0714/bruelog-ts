@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 
 import DictionaryEntryComponent from './subcomponents/DictionaryEntryComponent';
-const DICTIONARY_PATH = 'dictionary';
 
+const DICTIONARY_PATH = 'dictionary';
 const VIEWS = {
   HOPS: 1,
   MALTS: 2,
@@ -68,7 +68,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
         </div>
       </div>
       <button><Link to="">Back</Link></button>
-      { dictionary.update }
+      <span>{ dictionary.update }</span>
     </div>);
   }
 
@@ -92,17 +92,6 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     const editType = data.type as string;
     const newDictionary = Object.assign(dictionary[editType], { [data.id as number]: data });
     delete data.type;
-
-    // if (update) {
-    //   // This is an update
-    //   // const index = newDictionary.map(o => o.id).indexOf(data.id);
-    //   // newDictionary[index] = data;
-    //
-    // } else {
-    //   // newDictionary.push(data);
-    //
-    //   // this.setState({ showingDictionary: newDictionary });
-    // }
 
     return { [editType]: newDictionary };
   }
@@ -134,7 +123,6 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     APIService.delete(DICTIONARY_PATH, {id, type}).then(res => {
       const newDict = this.props.dictionary[type].filter(ele => ele.id !== id);
       this.props.updateDictionary({[type]: newDict});
-      // this.setState({ showingDictionary: newDict });
     }).catch(err => {
       window.console.error('Error deleting new entry', err.message);
     });

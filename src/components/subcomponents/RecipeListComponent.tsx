@@ -1,10 +1,21 @@
 import * as React from 'react';
 
-class RecipeListComponent extends React.Component {
+interface IRecipeListComponentProps {
+  onAddRecipeClick: () => void;
+}
+
+class RecipeListComponent extends React.Component<IRecipeListComponentProps, {}> {
+
+  public componentWillMount () {
+    //
+  }
 
   public render () {
-    return <div>One Recipe</div>;
+    return (<div>
+      Many Recipe
+      <button onClick={this.props.onAddRecipeClick}>Add</button>
+      </div>);
   }
 }
 
-export default RecipeListComponent as React.ComponentClass;
+export default RecipeListComponent as React.ComponentClass<IRecipeListComponentProps>;

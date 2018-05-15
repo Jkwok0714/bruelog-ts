@@ -18,6 +18,7 @@ const Constants = require('./constants.js');
 
 const UserHandler = require('./requestHandlers/userHandler.js');
 const DictionaryHandler = require('./requestHandlers/dictionaryHandler.js');
+const ApiHandler = require('./requestHandlers/apiHandler.js');
 
 const db = new Database();
 const app = express();
@@ -83,6 +84,26 @@ app.delete('/dictionary', (req, res) => {
 app.get('/dictionary', (req, res) => {
   DictionaryHandler.getUserDictionaries(req, res, db);
 })
+
+/**
+ * API Handling
+ */
+
+app.get('/api/:category', (req, res) => {
+ ApiHandler.apiGet(req, res, db);
+});
+
+app.post('/api/:category', (req, res) => {
+ ApiHandler.apiPost(req, res, db);
+});
+
+app.put('/api/:category', (req, res) => {
+ ApiHandler.apiPut(req, res, db);
+});
+
+app.delete('/api/:category', (req, res) => {
+ ApiHandler.apiDelete(req, res, db);
+});
 
 /**
  * For handling a new user being created or modified

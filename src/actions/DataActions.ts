@@ -9,6 +9,11 @@ class DataActions {
     data,
     type: 'updateDictionary'
   });
+
+  public static applyRecipesData = (data) => ({
+    data,
+    type: 'applyRecipeData'
+  });
 }
 
 export default DataActions;

@@ -3,7 +3,7 @@
  */
 
  /**
-  *
+  * Logging function
   * @function
   * @param {string} message The log to print out
   * @param {string} [color='x1b[37m'] Color to print the log with
@@ -36,7 +36,7 @@ const log = (message, color) => {
 /**
  * Constructs a random string token for use with unique IDs/names
  * @function
- * @returns {string} Random token of length 15
+ * @yields {string} Random token of length 15
  */
 const token = () => {
   let rndString = '';
@@ -55,6 +55,7 @@ const token = () => {
 
 /**
  * Get the extension from a file name
+ * @function
  * @param {string} filename The filename to get the extension from
  */
 const getExtension = (filename) => {
@@ -62,8 +63,59 @@ const getExtension = (filename) => {
   return split[split.length - 1];
 }
 
+/**
+ *  Convert arrays pulled from SQL into objects to help access speeds and ease
+ * @function
+ * @param {Array} array An input of data pulled from SQL
+ * @returns {object} Object form where the key is the id and the value is the original object in the SQL return
+ */
+const convertArrayToDataObject = (array) => {
+  let result = {};
+  for (let i = 0; i < array.length; i++) {
+    result[array[i].id] = array[i];
+  }
+  return result;
+}
+
+/**
+ * Construct the data and string needed to run a sql query based on sent data
+ * @function
+ * @param {object} requestBody The body of the api request passed in raw
+ * @param {boolean} isUpdate Determines what kind of sql query will be constructed
+ * @param {number} [userID=null] If userID needs to be written into the db, include it.
+ * @returns {object} Contains query and data to be used with sql call
+ */
+const constructQuery = (requestBody, isUpdate, userID = null) => {
+  let queryString = [];
+  let queryData = [];
+  let finalString;
+
+  if (userID) {
+    queryString.push(isUpdate ? `userid=?` : 'userid');
+    queryData.push(userID);
+  }
+
+  for (let key in requestBody) {
+    queryString.push(isUpdate ? `${key.toLowerCase()}=?` : key.toLowerCase());
+    queryData.push(requestBody[key]);
+  }
+
+  if (isUpdate) {
+    finalString = `(${queryString.join(', ')}) VALUES(${Array(queryString.length).fill('?').join(', ')})`;
+  } else {
+    finalString = `${queryString.join(', ')}`;
+  }
+
+  return {
+    query: finalString,
+    data: queryData
+  };
+}
+
 module.exports = {
   getExtension,
+  convertArrayToDataObject,
   log,
-  token
+  token,
+  constructQuery
 };

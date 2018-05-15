@@ -59,14 +59,6 @@ const handleDeleteEntry = (req, res, db) => {
   });
 }
 
-const convertArrayToDataObject = (array) => {
-  let result = {};
-  for (let i = 0; i < array.length; i++) {
-    result[array[i].id] = array[i];
-  }
-  return result;
-}
-
 /**
  * Handle retrieving all of a user's dictionaries for use
  * @function
@@ -77,16 +69,16 @@ const getUserDictionaries = (req, res, db) => {
   const userID = req.get('userID');
   // console.log('looking for user', userID);
   db.read('SELECT * FROM hops WHERE userid=? OR userid=?', [userID, 0]).then(data => {
-    dataPackage.hops = convertArrayToDataObject(data);
+    dataPackage.hops = Helpers.convertArrayToDataObject(data);
     return db.read('SELECT * FROM malts WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
-    dataPackage.malts = convertArrayToDataObject(data);
+    dataPackage.malts = Helpers.convertArrayToDataObject(data);
     return db.read('SELECT * FROM yeast WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
-    dataPackage.yeast = convertArrayToDataObject(data);
+    dataPackage.yeast = Helpers.convertArrayToDataObject(data);
     return db.read('SELECT * FROM other WHERE userid=? OR userid=?', [userID, 0]);
   }).then(data => {
-    dataPackage.other = convertArrayToDataObject(data);
+    dataPackage.other = Helpers.convertArrayToDataObject(data);
     res.status(200).send(dataPackage);
   }).catch(err => {
     res.status(500).send(`Error occured: ${err.message}`);
