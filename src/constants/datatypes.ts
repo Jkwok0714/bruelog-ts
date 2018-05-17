@@ -33,3 +33,16 @@ export interface IDictionary {
   yeast: IDictionaryEntry[];
   other: IDictionaryEntry[];
 }
+
+export interface IRecipe {
+  description: string;
+  id?: number;
+  ingredients: any;
+  name: string;
+  style: string;
+  targetbatchsize: string;
+}
+
+export interface IAPIDataResponse {
+  [id: number]: IRecipe;
+}

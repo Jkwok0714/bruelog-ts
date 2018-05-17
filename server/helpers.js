@@ -97,13 +97,15 @@ const constructQuery = (requestBody, isUpdate, userID = null) => {
 
   for (let key in requestBody) {
     queryString.push(isUpdate ? `${key.toLowerCase()}=?` : key.toLowerCase());
-    queryData.push(requestBody[key]);
+    queryData.push(requestBody[key] || 1);
   }
 
-  if (isUpdate) {
-    finalString = `(${queryString.join(', ')}) VALUES(${Array(queryString.length).fill('?').join(', ')})`;
+  if (!isUpdate) {
+    const valuesFill = Array(queryString.length).fill('?').join(', ');
+    finalString = `(${queryString.join(', ')}) VALUES(${valuesFill})`;
   } else {
     finalString = `${queryString.join(', ')}`;
+    queryData.push(requestBody.id);
   }
 
   return {

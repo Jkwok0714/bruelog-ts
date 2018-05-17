@@ -1,4 +1,5 @@
 import DataActions from 'actions/DataActions';
+import { IAPIResponse } from 'constants/datatypes';
 import APIService from 'helpers/APIService';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -29,12 +30,10 @@ class RecipesComponent extends React.Component<IRecipesComponentProps, IRecipesC
     currentView: VIEWS.LIST
   };
 
-  private defaultEdit = false;
+  private defaultEdit: any = null;
 
   public componentWillMount () {
-    APIService.get(RECIPE_PATH).then(res => {
-      window.console.log(res);
-    }).catch(err => window.console.error(err));
+    this.getRecipeData();
   }
 
   public render () {
@@ -43,20 +42,46 @@ class RecipesComponent extends React.Component<IRecipesComponentProps, IRecipesC
     return (
       <div>
         <h1>Recipes</h1>
-        {currentView === VIEWS.LIST && <RecipeListComponent onAddRecipeClick={this.onAddRecipeClick} />}
-        {currentView === VIEWS.DETAIL && <RecipeEntryComponent onReturnToList={this.onReturnToList} defaultEdit={this.defaultEdit} />}
+        {currentView === VIEWS.LIST && <RecipeListComponent recipes={this.props.recipes} onAddRecipeClick={this.onAddRecipeClick} onEditRecipe={this.onEditRecipe} />}
+        {currentView === VIEWS.DETAIL && <RecipeEntryComponent onSubmit={this.onSubmit} onReturnToList={this.onReturnToList} editRecipe={this.defaultEdit} />}
 
         <button><Link to="">Back</Link></button>
       </div>
     );
   }
 
-  private onAddRecipeClick = () => {
-    this.defaultEdit = true;
+  public onSubmit = (data: any, update: boolean) => {
+    if (update) {
+      APIService.put(RECIPE_PATH, data).then(res => {
+        this.onReturnToList(true);
+      });
+    } else {
+      APIService.post(RECIPE_PATH, data).then(res => {
+        this.onReturnToList(true);
+      });
+    }
+  }
+
+  public onEditRecipe = (recipe) => {
+    this.defaultEdit = recipe;
     this.setState({ currentView: VIEWS.DETAIL });
   };
 
-  private onReturnToList = () => {
+  private getRecipeData = () => {
+    APIService.get(RECIPE_PATH).then(res => {
+      this.props.applyRecipesData((res as IAPIResponse).data);
+    }).catch(err => window.console.error(err));
+  }
+
+  private onAddRecipeClick = () => {
+    this.defaultEdit = {};
+    this.setState({ currentView: VIEWS.DETAIL });
+  };
+
+  private onReturnToList = (update = false) => {
+    if (update) {
+      this.getRecipeData();
+    }
     this.setState({ currentView: VIEWS.LIST });
   }
 

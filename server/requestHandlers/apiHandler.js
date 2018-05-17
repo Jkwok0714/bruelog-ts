@@ -20,7 +20,8 @@ const apiPost = (req, res, db) => {
   const body = req.body;
   const userID = req.get('userID');
   const queryConstructor = Helpers.constructQuery(body, false, userID);
-  db.write(`INSERT INTO ${req.params.category}${queryConstructor.query}`,
+  console.log(queryConstructor.data);
+  db.write(`INSERT INTO ${req.params.category} ${queryConstructor.query}`,
     queryConstructor.data).then(data => {
     res.status(200).send({id: data});
   }).catch(err => {
@@ -32,7 +33,8 @@ const apiPost = (req, res, db) => {
 const apiPut = (req, res, db) => {
   const body = req.body;
   const queryConstructor = Helpers.constructQuery(body, true, null);
-  db.write(`UPDATE ${req.params.category} ${queryConstructor.query} WHERE id=?`,
+  console.log(queryConstructor.data);
+  db.write(`UPDATE ${req.params.category} SET ${queryConstructor.query} WHERE id=?`,
     queryConstructor.data).then(data => {
     res.status(200).send({id: body.id});
   }).catch(err => {

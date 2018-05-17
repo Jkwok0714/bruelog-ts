@@ -64,9 +64,7 @@ class SignupComponent extends React.Component<ISignupComponentProps, ISignupComp
   };
 
   private onChange (key: string, e: React.FormEvent<HTMLInputElement>) {
-    window.console.log(this.props.message);
     this.setState({ [key as any]: e.currentTarget.value });
-
     // this.props.history.push('/fap');
   }
 

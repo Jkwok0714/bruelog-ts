@@ -58,6 +58,11 @@ class Helpers {
       }).catch(err => reject(err));
     })
   }
+
+  public static cloneWithoutKeys (object: any, keysToRemove: string[]) {
+    const omit = keysToRemove.reduce((acc, ele) => Object.assign(acc, { [ele]: undefined }), {});
+    return Object.assign({}, object, omit);
+  }
 }
 
 export default Helpers;
