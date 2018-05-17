@@ -97,7 +97,7 @@ const constructQuery = (requestBody, isUpdate, userID = null) => {
 
   for (let key in requestBody) {
     queryString.push(isUpdate ? `${key.toLowerCase()}=?` : key.toLowerCase());
-    queryData.push(requestBody[key] || 1);
+    queryData.push(requestBody[key] || null);
   }
 
   if (!isUpdate) {

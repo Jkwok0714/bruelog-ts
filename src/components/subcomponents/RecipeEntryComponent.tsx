@@ -31,12 +31,19 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
 
   public componentDidMount () {
     if (this.props.editRecipe) {
-      this.setState(Object.assign({ editing: true }, this.props.editRecipe));
+      let parsedIngredients;
+      try {
+        parsedIngredients = JSON.parse(this.props.editRecipe.ingredients);
+      } catch(e) {
+        parsedIngredients = {}
+      }
+      this.setState(Object.assign({ editing: true }, this.props.editRecipe, { ingredients: parsedIngredients }));
     }
   }
 
   public render () {
     const { editing, description, name, style, targetbatchsize, ingredients, pickingIngredients } = this.state;
+    window.console.log(ingredients);
     return (
       <div>
         One Recipe
@@ -79,6 +86,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   public onSelect = (type: string, id: number) => {
     const storageString = `${type}_${id}`;
     const { ingredients } = this.state;
+    window.console.log('selected', storageString, ingredients);
     if (this.state.ingredients[storageString]) {
       this.setState({ ingredients: Helpers.cloneWithoutKeys(ingredients, [storageString]) });
     } else {

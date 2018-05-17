@@ -18,10 +18,10 @@ const VIEWS = {
 }
 
 interface IDictionaryComponentPropsFromParent {
-  modalMode?: boolean;
-  onSelect?: (type: string, id: number) => void;
-  onClose?: () => void;
-  selected?: any;
+  modalMode: boolean;
+  onSelect: (type: string, id: number) => void;
+  onClose: () => void;
+  selected: any;
 }
 
 interface IDictionaryComponentProps extends IDictionaryComponentPropsFromParent {
@@ -48,7 +48,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
   };
 
   public render () {
-    const { message, user, dictionary, modalMode } = this.props;
+    const { message, user, dictionary, modalMode, selected, onSelect } = this.props;
     const { display, showingAddEntry } = this.state;
     const type = this.getTypeString(display);
     const username = user ? user.username : '';
@@ -66,7 +66,8 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
 
       <div className='dictionary-list'>
         {dictionaryDisplay.map((entry: IDictionaryEntry) => {
-            return <DictionaryEntryComponent key={entry.id+entry.name} item={entry} onSubmit={this.updateEntry} onDelete={this.deleteEntry} type={type}/>
+            const itemSelected = selected === undefined ? undefined : typeof selected[`${type}_${entry.id}`] === 'string';
+            return <DictionaryEntryComponent key={entry.id+entry.name} item={entry} onSelect={onSelect} selected={itemSelected} onSubmit={this.updateEntry} onDelete={this.deleteEntry} type={type}/>
           })
         }
         <div>

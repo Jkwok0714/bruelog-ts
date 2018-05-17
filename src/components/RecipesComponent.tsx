@@ -51,12 +51,13 @@ class RecipesComponent extends React.Component<IRecipesComponentProps, IRecipesC
   }
 
   public onSubmit = (data: any, update: boolean) => {
+    const stringData = Object.assign(data, { ingredients: JSON.stringify(data.ingredients) });
     if (update) {
-      APIService.put(RECIPE_PATH, data).then(res => {
+      APIService.put(RECIPE_PATH, stringData).then(res => {
         this.onReturnToList(true);
       });
     } else {
-      APIService.post(RECIPE_PATH, data).then(res => {
+      APIService.post(RECIPE_PATH, stringData).then(res => {
         this.onReturnToList(true);
       });
     }

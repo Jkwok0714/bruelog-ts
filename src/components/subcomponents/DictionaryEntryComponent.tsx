@@ -8,6 +8,8 @@ interface IDictionaryEntryComponentProps {
   onDelete?: (type: string, id: number) => void;
   item?: IDictionaryEntry;
   editing?: boolean;
+  selected?: boolean;
+  onSelect?: (type: string, id: number) => void;
 }
 
 interface IDictionaryEntryComponentState {
@@ -43,10 +45,12 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
   }
 
   public render () {
+    const { selected, onSelect } = this.props;
     const { editing, name, description, flavors } = this.state;
 
     return (
       <div>
+        {selected !== undefined && <input type='checkbox' defaultChecked={selected} onClick={this.handleSelect}/>}
         {editing ? (
           <div>
             <form onSubmit={this.handleSubmit}>
@@ -90,6 +94,15 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
     const { type } = this.props;
 
     this.props.onDelete(type, id);
+  }
+
+  private handleSelect = () => {
+    const { onSelect, type, item } = this.props;
+    if (!onSelect || !item) {
+      window.console.log('Missing onSelect or item', onSelect, item);
+      return;
+    }
+    onSelect(type, item.id || -1);
   }
 
   private toggleEdit = () => {
