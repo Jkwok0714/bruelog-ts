@@ -17,7 +17,14 @@ const VIEWS = {
   YEAST: 3
 }
 
-interface IDictionaryComponentProps {
+interface IDictionaryComponentPropsFromParent {
+  modalMode?: boolean;
+  onSelect?: (type: string, id: number) => void;
+  onClose?: () => void;
+  selected?: any;
+}
+
+interface IDictionaryComponentProps extends IDictionaryComponentPropsFromParent {
   dictionary: IDictionary;
   message: string;
   user: any;
@@ -41,7 +48,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
   };
 
   public render () {
-    const { message, user, dictionary } = this.props;
+    const { message, user, dictionary, modalMode } = this.props;
     const { display, showingAddEntry } = this.state;
     const type = this.getTypeString(display);
     const username = user ? user.username : '';
@@ -67,7 +74,8 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
           {showingAddEntry && <DictionaryEntryComponent editing={true} onSubmit={this.addNewEntry} type={type}/>}
         </div>
       </div>
-      <button><Link to="">Back</Link></button>
+      {!modalMode && <button><Link to="">Back</Link></button>}
+      {modalMode && <button onClick={this.props.onClose}>Close</button>}
       <span>{ dictionary.update }</span>
     </div>);
   }
@@ -101,6 +109,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
       data.id = (res as any).data.id;
       const newData = this.constructNewData(data, false);
       this.props.updateDictionary(newData);
+      // Future improvement: if modal mode, add it to selected
       this.setState({ showingAddEntry: false });
     }).catch(err => {
       window.console.error('Error posting new entry', err.message);
@@ -144,4 +153,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DictionaryComponent as React.ComponentClass<any>));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DictionaryComponent)) as React.ComponentClass<IDictionaryComponentPropsFromParent>;

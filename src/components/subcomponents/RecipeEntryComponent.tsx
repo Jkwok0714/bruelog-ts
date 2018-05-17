@@ -1,3 +1,4 @@
+import DictionaryComponent from 'components/DictionaryComponent';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 
@@ -9,9 +10,10 @@ interface IRecipeEntryComponentProps {
 
 interface IRecipeEntryComponentState {
   editing: boolean;
-  ingredients: any[];
+  ingredients: any;
   name: string;
   description: string;
+  pickingIngredients: boolean;
   style: string;
   targetbatchsize: string;
 }
@@ -20,8 +22,9 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   public state = {
     description: '',
     editing: false,
-    ingredients: [],
+    ingredients: {},
     name: '',
+    pickingIngredients: false,
     style: '',
     targetbatchsize: ''
   }
@@ -33,7 +36,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   }
 
   public render () {
-    const { editing, description, name, style, targetbatchsize } = this.state;
+    const { editing, description, name, style, targetbatchsize, ingredients, pickingIngredients } = this.state;
     return (
       <div>
         One Recipe
@@ -43,6 +46,16 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             <input value={description} onChange={(e) => this.onChange('description', e)} placeholder='Description' />
             <input value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
             <input value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
+
+            <button onClick={this.onSubmit}>Submit</button>
+            {pickingIngredients &&
+              <DictionaryComponent
+                modalMode={true}
+                onClose={() => this.handleDictionaryDisplay(false)}
+                onSelect={this.onSelect}
+                selected={ingredients}
+              />
+            }
           </div>
         ) : (
           <div>
@@ -53,15 +66,32 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
           </div>
         )}
 
-        <button onClick={this.onSubmit}>Submit</button>
+        <div className='ingredient-list'>
+          List here
+          {!pickingIngredients && <button onClick={() => this.handleDictionaryDisplay(true)}>Open Dictionary</button>}
+        </div>
 
-        <button onClick={this.props.onReturnToList}>Cancel</button>
+        <button onClick={this.props.onReturnToList}>Back</button>
       </div>
     );
   }
 
+  public onSelect = (type: string, id: number) => {
+    const storageString = `${type}_${id}`;
+    const { ingredients } = this.state;
+    if (this.state.ingredients[storageString]) {
+      this.setState({ ingredients: Helpers.cloneWithoutKeys(ingredients, [storageString]) });
+    } else {
+      this.setState({ ingredients: Object.assign({}, ingredients, { [storageString]: '0oz' }) })
+    }
+  }
+
+  public handleDictionaryDisplay = (open: boolean) => {
+    this.setState({ pickingIngredients: open });
+  }
+
   private onSubmit = () => {
-    const data = Helpers.cloneWithoutKeys(this.state, ['editing']);
+    const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients']);
     this.props.onSubmit(data, this.props.editRecipe.id !== undefined);
   }
 
