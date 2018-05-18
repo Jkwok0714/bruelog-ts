@@ -97,7 +97,7 @@ const constructQuery = (requestBody, isUpdate, userID = null) => {
 
   for (let key in requestBody) {
     queryString.push(isUpdate ? `${key.toLowerCase()}=?` : key.toLowerCase());
-    queryData.push(requestBody[key] || null);
+    queryData.push(stringifyIfObject(requestBody[key]) || null);
   }
 
   if (!isUpdate) {
@@ -114,10 +114,48 @@ const constructQuery = (requestBody, isUpdate, userID = null) => {
   };
 }
 
+const stringifyIfObject = (element) => {
+  return typeof element === 'object' ? JSON.stringify(element) : element;
+}
+
+const parseIfStringified = (element) => {
+  console.log('Element', element);
+  return typeof element === 'string' ? (element[0] === '{' || element[0] === '[' ? JSON.parse(element) : element) : element;
+}
+
+/**
+ * Parse client's data into primitive structures for storing in DB
+ * @function
+ * @param {array} data The data sent from client that will possibly have non primitive structures
+ * @returns {array} Data with primitive structures
+ */
+const prepareForDatabase = (data) => {
+  return data.map(ele => {
+    return typeof ele === 'object' ? JSON.stringify(ele) : ele;
+  });
+}
+/**
+ * Parse db's data into objects for use with the client-side
+ * @function
+ * @param {array} data The data pulled from db that will have only primitive structures
+ * @returns {array} Data with objects
+ */
+const prepareForClient = (data) => {
+  return data.map(ele => {
+    let parsedData = {};
+    for (let key in ele) {
+      parsedData[key] = parseIfStringified(ele[key]);
+    }
+    return parsedData;
+  });
+}
+
 module.exports = {
   getExtension,
   convertArrayToDataObject,
   log,
   token,
-  constructQuery
+  constructQuery,
+  prepareForClient,
+  prepareForDatabase
 };

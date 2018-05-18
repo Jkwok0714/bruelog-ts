@@ -3,6 +3,7 @@ import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 
 interface IRecipeEntryComponentProps {
+  dictionary: any; // IDictionary;
   onReturnToList: () => void;
   onSubmit: (data: any, update: boolean) => void;
   editRecipe?: any; // IRecipe
@@ -31,19 +32,20 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
 
   public componentDidMount () {
     if (this.props.editRecipe) {
-      let parsedIngredients;
-      try {
-        parsedIngredients = JSON.parse(this.props.editRecipe.ingredients);
-      } catch(e) {
-        parsedIngredients = {}
-      }
-      this.setState(Object.assign({ editing: true }, this.props.editRecipe, { ingredients: parsedIngredients }));
+      // let parsedIngredients;
+      // try {
+      //   parsedIngredients = JSON.parse(this.props.editRecipe.ingredients);
+      // } catch(e) {
+      //   parsedIngredients = {}
+      // }
+      this.setState(Object.assign({ editing: true }, this.props.editRecipe ));
     }
   }
 
   public render () {
     const { editing, description, name, style, targetbatchsize, ingredients, pickingIngredients } = this.state;
-    window.console.log(ingredients);
+    const { dictionary } = this.props;
+
     return (
       <div>
         One Recipe
@@ -55,14 +57,16 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             <input value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
 
             <button onClick={this.onSubmit}>Submit</button>
-            {pickingIngredients &&
+            {!pickingIngredients ? (
+              <button onClick={() => this.handleDictionaryDisplay(true)}>Edit Ingredients</button>
+            ) : (
               <DictionaryComponent
                 modalMode={true}
                 onClose={() => this.handleDictionaryDisplay(false)}
                 onSelect={this.onSelect}
                 selected={ingredients}
               />
-            }
+            )}
           </div>
         ) : (
           <div>
@@ -72,12 +76,17 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             <span>{targetbatchsize}</span>
           </div>
         )}
-
         <div className='ingredient-list'>
-          List here
-          {!pickingIngredients && <button onClick={() => this.handleDictionaryDisplay(true)}>Open Dictionary</button>}
+          {Object.keys(ingredients).map((ingredientKey, i) => {
+            const split = ingredientKey.split('_');
+            return (
+              <div className='list-entry' key={ingredientKey}>
+                <span>{dictionary[split[0]][split[1]].name}</span>
+                {editing ? (<input value={ingredients[ingredientKey]} onChange={(e) => this.handleAmountChange(ingredientKey, e)} />) : (<span>{ingredients[ingredientKey]}</span>)}
+              </div>
+            );
+          })}
         </div>
-
         <button onClick={this.props.onReturnToList}>Back</button>
       </div>
     );
@@ -101,6 +110,11 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   private onSubmit = () => {
     const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients']);
     this.props.onSubmit(data, this.props.editRecipe.id !== undefined);
+  }
+
+  private handleAmountChange = (ingredientKey: string, e: React.FormEvent<HTMLInputElement>) => {
+    const { ingredients } = this.state;
+    this.setState({ ingredients: Object.assign({}, ingredients, { [ingredientKey]: e.currentTarget.value })});
   }
 
   private onChange = (key: string, e: React.FormEvent<HTMLInputElement>) => {

@@ -1,5 +1,6 @@
 import DataActions from 'actions/DataActions';
 import LoginActions from 'actions/LoginActions';
+import APIService from 'helpers/APIService';
 import Helpers from 'helpers/Helpers';
 
 import * as React from 'react';
@@ -16,7 +17,10 @@ import ManagementComponent from './components/ManagementComponent';
 import RecipesComponent from './components/RecipesComponent';
 import SignupComponent from './components/SignupComponent';
 
+const DICTIONARY_PATH = 'dictionary';
+
 interface IAppProps {
+  applyDictionaryData: (data) => void;
   loggedIn: boolean;
   changeLoginState: (loginState: boolean) => void;
   changeMessage: (message: string) => void;
@@ -31,6 +35,12 @@ class App extends React.Component<IAppProps, {}> {
       if (loginCache) {
         changeLoginState(true);
         changeUser(loginCache);
+        // Logged in, get the dictionary and other required data
+        APIService.get(DICTIONARY_PATH).then((data: any) => {
+          this.props.applyDictionaryData(data.data);
+        }).catch(err => {
+          // handle error
+        });
       }
   }
 

@@ -76,7 +76,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
         </div>
       </div>
       {!modalMode && <button><Link to="">Back</Link></button>}
-      {modalMode && <button onClick={this.props.onClose}>Close</button>}
+      {modalMode && <button onClick={this.props.onClose}>Close Dictionary</button>}
       <span>{ dictionary.update }</span>
     </div>);
   }

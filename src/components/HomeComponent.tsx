@@ -8,8 +8,6 @@ import { BrowserRouter, Link, withRouter } from 'react-router-dom';
 
 import './styles/home.css';
 
-const DICTIONARY_PATH = 'dictionary';
-
 interface IHomeComponentProps {
   applyDictionaryData: (data) => void;
   message: string;
@@ -20,14 +18,10 @@ interface IHomeComponentProps {
 }
 
 class HomeComponent extends React.Component<IHomeComponentProps, {}> {
-  public componentWillMount () {
-    // Get needed info for user that will be used across areas
-    APIService.get(DICTIONARY_PATH).then((data: any) => {
-      this.props.applyDictionaryData(data.data);
-    }).catch(err => {
-      // handle error
-    });
-  }
+  // public componentWillMount () {
+  //   // Get needed info for user that will be used across areas
+  //
+  // }
 
   public render () {
     const { message, user } = this.props;

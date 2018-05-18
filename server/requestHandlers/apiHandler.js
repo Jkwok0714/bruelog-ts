@@ -8,12 +8,13 @@ const apiGet = (req, res, db) => {
   const body = req.body;
   const userID = req.get('userID');
   db.read(`SELECT * FROM ${req.params.category} WHERE userid=? OR userid=?`, [userID, 0]).then(data => {
-    res.status(200).send(Helpers.convertArrayToDataObject(data));
+    console.log(data);
+    let parsedData = Helpers.prepareForClient(data);
+    res.status(200).send(Helpers.convertArrayToDataObject(parsedData));
   }).catch(err => {
     Helpers.log(err.message, 'R');
     res.status(500).send(`Error occured: ${err.message}`);
   });
-  // res.status(200).send(`UserID ${userID} requested ${req.params.category}`);
 };
 
 const apiPost = (req, res, db) => {
