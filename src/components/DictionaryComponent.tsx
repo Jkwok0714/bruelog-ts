@@ -57,7 +57,7 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
 
     const dictionaryDisplay = Helpers.objectValues(dictionaryObject);
 
-    return (<div className='dictionary-wrapper'>
+    return (<div className={`dictionary-wrapper ${modalMode ? 'modal' : ''}`}>
       <h1>Ingredient Dictionary</h1>
       <button onClick={() => this.changeView(VIEWS.HOPS)}>Hops</button>
       <button onClick={() => this.changeView(VIEWS.MALTS)}>Malts</button>

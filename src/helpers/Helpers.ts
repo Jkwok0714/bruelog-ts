@@ -69,8 +69,8 @@ class Helpers {
   }
 
   public static getNumber (input: string) {
-    const regMatch = input.match(/\d+/);
-    return regMatch ? +regMatch[0] : null;
+    const regMatch = input.match(/\d+\.?\d*/);
+    return regMatch ? +regMatch[0] : 0;
   }
 }
 

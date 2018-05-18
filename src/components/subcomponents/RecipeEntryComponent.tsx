@@ -1,6 +1,7 @@
 import DictionaryComponent from 'components/DictionaryComponent';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
+import RecipeCalculatorComponent from './RecipeCalculatorComponent';
 
 interface IRecipeEntryComponentProps {
   dictionary: any; // IDictionary;
@@ -18,10 +19,12 @@ interface IRecipeEntryComponentState {
   pickingIngredients: boolean;
   style: string;
   targetbatchsize: string;
+  calculator: boolean;
 }
 
 class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, IRecipeEntryComponentState> {
   public state = {
+    calculator: false,
     description: '',
     editing: false,
     ingredients: {},
@@ -44,7 +47,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   }
 
   public render () {
-    const { editing, description, name, style, targetbatchsize, ingredients, pickingIngredients } = this.state;
+    const { calculator, editing, description, name, style, targetbatchsize, ingredients, pickingIngredients } = this.state;
     const { dictionary } = this.props;
 
     return (
@@ -76,6 +79,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             <span>{description}</span>
             <span>{targetbatchsize}</span>
             <button onClick={this.onEdit}>Edit</button>
+            <button onClick={() => this.toggleCalculator(true)}>Calculator</button>
           </div>
         )}
         <div className='ingredient-list'>
@@ -90,6 +94,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
           })}
         </div>
         <button onClick={this.props.onReturnToList}>Back</button>
+        {calculator && <RecipeCalculatorComponent ingredients={ingredients} targetbatchsize={targetbatchsize} dictionary={dictionary} onClose={() => this.toggleCalculator(false)} />}
       </div>
     );
   }
@@ -110,10 +115,14 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   }
 
   private onSubmit = () => {
-    const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients']);
+    const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients', 'calculator']);
     this.props.onSubmit(data, this.numID !== -1);
     this.setState({ editing: false });
   }
+
+  private toggleCalculator = (state: boolean) => {
+    this.setState({ calculator: state });
+  };
 
   private onEdit = () => {
     this.setState({ editing: true });

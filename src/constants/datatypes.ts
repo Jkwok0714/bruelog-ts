@@ -46,3 +46,10 @@ export interface IRecipe {
 export interface IAPIDataResponse {
   [id: number]: IRecipe;
 }
+
+export interface IDisassembledIngredient {
+  name: string;
+  amount: string;
+  limit: string;
+  total: string;
+}
