@@ -63,6 +63,15 @@ class Helpers {
     const omit = keysToRemove.reduce((acc, ele) => Object.assign(acc, { [ele]: undefined }), {});
     return Object.assign({}, object, omit);
   }
+
+  public static getUnits (input: string) {
+    return input.replace(/[^a-z]/gi, '');
+  }
+
+  public static getNumber (input: string) {
+    const regMatch = input.match(/\d+/);
+    return regMatch ? +regMatch[0] : null;
+  }
 }
 
 export default Helpers;

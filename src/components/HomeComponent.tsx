@@ -18,11 +18,6 @@ interface IHomeComponentProps {
 }
 
 class HomeComponent extends React.Component<IHomeComponentProps, {}> {
-  // public componentWillMount () {
-  //   // Get needed info for user that will be used across areas
-  //
-  // }
-
   public render () {
     const { message, user } = this.props;
     const username = user ? user.username : '';

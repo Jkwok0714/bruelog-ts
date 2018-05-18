@@ -7,6 +7,7 @@ interface IRecipeEntryComponentProps {
   onReturnToList: () => void;
   onSubmit: (data: any, update: boolean) => void;
   editRecipe?: any; // IRecipe
+  viewRecipe?: any;
 }
 
 interface IRecipeEntryComponentState {
@@ -30,15 +31,15 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
     targetbatchsize: ''
   }
 
+  private numID: number = -1;
+
   public componentDidMount () {
     if (this.props.editRecipe) {
-      // let parsedIngredients;
-      // try {
-      //   parsedIngredients = JSON.parse(this.props.editRecipe.ingredients);
-      // } catch(e) {
-      //   parsedIngredients = {}
-      // }
       this.setState(Object.assign({ editing: true }, this.props.editRecipe ));
+      this.numID = this.props.editRecipe.id;
+    } else if (this.props.viewRecipe) {
+      this.setState(Object.assign(this.state, this.props.viewRecipe));
+      this.numID = this.props.viewRecipe.id;
     }
   }
 
@@ -70,10 +71,11 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
           </div>
         ) : (
           <div>
-            <h1>{name}</h1>
+            <h2>{name}</h2>
             <span>{style}</span>
             <span>{description}</span>
             <span>{targetbatchsize}</span>
+            <button onClick={this.onEdit}>Edit</button>
           </div>
         )}
         <div className='ingredient-list'>
@@ -109,8 +111,13 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
 
   private onSubmit = () => {
     const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients']);
-    this.props.onSubmit(data, this.props.editRecipe.id !== undefined);
+    this.props.onSubmit(data, this.numID !== -1);
+    this.setState({ editing: false });
   }
+
+  private onEdit = () => {
+    this.setState({ editing: true });
+  };
 
   private handleAmountChange = (ingredientKey: string, e: React.FormEvent<HTMLInputElement>) => {
     const { ingredients } = this.state;

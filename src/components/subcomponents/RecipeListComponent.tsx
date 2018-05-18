@@ -4,6 +4,7 @@ import * as React from 'react';
 interface IRecipeListComponentProps {
   onAddRecipeClick: () => void;
   onEditRecipe: (recipe) => void;
+  onViewRecipe: (recipe) => void;
   recipes: IAPIDataResponse;
 }
 
@@ -29,6 +30,7 @@ class RecipeListComponent extends React.Component<IRecipeListComponentProps, {}>
         <span>{ recipeItem.name }</span>
         <span>{ recipeItem.style }</span>
         <button onClick={() => this.props.onEditRecipe(recipeItem)}>Edit</button>
+        <button onClick={() => this.props.onViewRecipe(recipeItem)}>View</button>
       </div>
     );
   }

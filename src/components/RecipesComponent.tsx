@@ -32,6 +32,7 @@ class RecipesComponent extends React.Component<IRecipesComponentProps, IRecipesC
   };
 
   private defaultEdit: any = null;
+  private viewSelection: any = null;
 
   public componentWillMount () {
     this.getRecipeData();
@@ -44,8 +45,8 @@ class RecipesComponent extends React.Component<IRecipesComponentProps, IRecipesC
     return (
       <div>
         <h1>Recipes</h1>
-        {currentView === VIEWS.LIST && <RecipeListComponent recipes={this.props.recipes} onAddRecipeClick={this.onAddRecipeClick} onEditRecipe={this.onEditRecipe} />}
-        {currentView === VIEWS.DETAIL && <RecipeEntryComponent dictionary={dictionary} onSubmit={this.onSubmit} onReturnToList={this.onReturnToList} editRecipe={this.defaultEdit} />}
+        {currentView === VIEWS.LIST && <RecipeListComponent recipes={this.props.recipes} onAddRecipeClick={this.onAddRecipeClick} onEditRecipe={this.onEditRecipe} onViewRecipe={this.onViewRecipe} />}
+        {currentView === VIEWS.DETAIL && <RecipeEntryComponent dictionary={dictionary} onSubmit={this.onSubmit} onReturnToList={this.onReturnToList} viewRecipe={this.viewSelection} editRecipe={this.defaultEdit} />}
 
         {currentView === VIEWS.LIST && <button><Link to="">Back</Link></button>}
       </div>
@@ -56,19 +57,29 @@ class RecipesComponent extends React.Component<IRecipesComponentProps, IRecipesC
     // const stringData = Object.assign(data, { ingredients: data.ingredients });
     if (update) {
       APIService.put(RECIPE_PATH, data).then(res => {
-        this.onReturnToList(true);
+        // this.onReturnToList(true);
+        this.getRecipeData();
       });
     } else {
       APIService.post(RECIPE_PATH, data).then(res => {
-        this.onReturnToList(true);
+        // this.onReturnToList(true);
+        this.getRecipeData();
       });
     }
   }
 
   public onEditRecipe = (recipe) => {
+    this.viewSelection = null;
     this.defaultEdit = recipe;
     this.setState({ currentView: VIEWS.DETAIL });
   };
+
+  public onViewRecipe = (recipe) => {
+    this.defaultEdit = null;
+    this.viewSelection = recipe;
+    this.setState({ currentView: VIEWS.DETAIL });
+  };
+
 
   private getRecipeData = () => {
     APIService.get(RECIPE_PATH).then(res => {
