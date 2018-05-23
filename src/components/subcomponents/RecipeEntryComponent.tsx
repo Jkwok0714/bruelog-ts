@@ -52,7 +52,6 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
 
     return (
       <div>
-        One Recipe
         {editing ? (
           <div>
             <input value={name} onChange={(e) => this.onChange('name', e)} placeholder='Name' />

@@ -25,7 +25,8 @@
     "server": "node server/index.js",
     "server-dev": "nodemon server/index.js",
     "init-db": "node server/database/init.js",
-    "document": "jsdoc server src -r -R README.md -d docs"
+    "document": "jsdoc server src -r -R README.md -d docs",
+    "lint": "tslint src/**/*.ts"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",

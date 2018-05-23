@@ -72,6 +72,12 @@ class Helpers {
     const regMatch = input.match(/\d+\.?\d*/);
     return regMatch ? +regMatch[0] : 0;
   }
+
+  public static getMin (key: string, arr: object[]) {
+    return arr.reduce((prev, curr) => {
+      return prev[key] < curr[key] ? prev : curr;
+    });
+  }
 }
 
 export default Helpers;

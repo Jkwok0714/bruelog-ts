@@ -52,4 +52,5 @@ export interface IDisassembledIngredient {
   amount: string;
   limit: string;
   total: string;
+  ratio?: number;
 }
