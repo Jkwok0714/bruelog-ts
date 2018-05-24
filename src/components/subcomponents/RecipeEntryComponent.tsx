@@ -84,9 +84,16 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
         <div className='ingredient-list'>
           {Object.keys(ingredients).map((ingredientKey, i) => {
             const split = ingredientKey.split('_');
+            let ingredientName = '';
+            try {
+              ingredientName = dictionary[split[0]][split[1]].name;
+            } catch (e) {
+              window.console.error('Failed finding name', split, e);
+            }
+
             return (
               <div className='list-entry' key={ingredientKey}>
-                <span>{dictionary[split[0]][split[1]].name}</span>
+                <span>{ingredientName}</span>
                 {editing ? (<input value={ingredients[ingredientKey]} onChange={(e) => this.handleAmountChange(ingredientKey, e)} />) : (<span>{ingredients[ingredientKey]}</span>)}
               </div>
             );
@@ -101,9 +108,11 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   public onSelect = (type: string, id: number) => {
     const storageString = `${type}_${id}`;
     const { ingredients } = this.state;
-    window.console.log('selected', storageString, ingredients);
     if (this.state.ingredients[storageString]) {
-      this.setState({ ingredients: Helpers.cloneWithoutKeys(ingredients, [storageString]) });
+      const setTo = Object.assign({}, ingredients);
+      delete setTo[storageString];
+      window.console.log('remove', storageString, 'get', setTo);
+      this.setState({ ingredients: setTo });
     } else {
       this.setState({ ingredients: Object.assign({}, ingredients, { [storageString]: '0oz' }) })
     }
@@ -115,7 +124,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
 
   private onSubmit = () => {
     const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients', 'calculator']);
-    this.props.onSubmit(data, this.numID !== -1);
+    this.props.onSubmit(data, this.numID > 0);
     this.setState({ editing: false });
   }
 

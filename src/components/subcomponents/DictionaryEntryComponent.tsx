@@ -50,7 +50,7 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
 
     return (
       <div>
-        {selected !== undefined && <input type='checkbox' defaultChecked={selected} onClick={this.handleSelect}/>}
+        {selected !== undefined && <input type='checkbox' checked={selected} onChange={this.handleSelect}/>}
         {editing ? (
           <div>
             <form onSubmit={this.handleSubmit}>

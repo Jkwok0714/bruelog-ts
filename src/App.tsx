@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Link, Route, withRouter } from 'react-router-dom';
 
-import './App.css';
 import DictionaryComponent from './components/DictionaryComponent';
 import HomeComponent from './components/HomeComponent';
 import LogEntryComponent from './components/LogEntryComponent';
@@ -16,6 +15,7 @@ import LoginComponent from './components/LoginComponent';
 import ManagementComponent from './components/ManagementComponent';
 import RecipesComponent from './components/RecipesComponent';
 import SignupComponent from './components/SignupComponent';
+import './components/styles/global.css';
 
 const DICTIONARY_PATH = 'dictionary';
 

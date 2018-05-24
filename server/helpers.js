@@ -119,7 +119,6 @@ const stringifyIfObject = (element) => {
 }
 
 const parseIfStringified = (element) => {
-  console.log('Element', element);
   return typeof element === 'string' ? (element[0] === '{' || element[0] === '[' ? JSON.parse(element) : element) : element;
 }
 
