@@ -24,12 +24,14 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
 
     return (<div className='home-wrapper'>
       <h1>{ `Hello ${username}.` }</h1>
-      {user.image && <img src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
+      {user.image && <img className='home-image' src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
 
-      <button><Link to="settings">User Settings</Link></button>
-      <button><Link to="dictionary">Ingredient Dictionary</Link></button>
-      <button><Link to="recipes">Recipes</Link></button>
-      <button onClick={this.logout}>Logout</button>
+      <div className='menu-bar'>
+        <button><Link to="settings">User Settings</Link></button>
+        <button><Link to="dictionary">Ingredient Dictionary</Link></button>
+        <button><Link to="recipes">Recipes</Link></button>
+        <button onClick={this.logout}>Logout</button>
+      </div>
     </div>);
   }
 

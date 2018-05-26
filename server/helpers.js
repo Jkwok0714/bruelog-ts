@@ -149,6 +149,17 @@ const prepareForClient = (data) => {
   });
 }
 
+const processNewApi = (category, data) => {
+  switch (category) {
+    case 'recipe':
+    case 'brew':
+      data.token = token();
+      break;
+    default:
+      break;
+  }
+};
+
 module.exports = {
   getExtension,
   convertArrayToDataObject,
@@ -156,5 +167,6 @@ module.exports = {
   token,
   constructQuery,
   prepareForClient,
-  prepareForDatabase
+  prepareForDatabase,
+  processNewApi
 };

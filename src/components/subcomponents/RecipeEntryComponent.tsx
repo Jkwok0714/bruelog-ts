@@ -51,7 +51,8 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
     const { dictionary } = this.props;
 
     return (
-      <div>
+      <div className='recipe-entry-wrapper'>
+        <h2>{name}</h2>
         {editing ? (
           <div>
             <input value={name} onChange={(e) => this.onChange('name', e)} placeholder='Name' />
@@ -59,7 +60,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             <input value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
             <input value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
 
-            <button onClick={this.onSubmit}>Submit</button>
+
             {!pickingIngredients ? (
               <button onClick={() => this.handleDictionaryDisplay(true)}>Edit Ingredients</button>
             ) : (
@@ -73,15 +74,15 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
           </div>
         ) : (
           <div>
-            <h2>{name}</h2>
+            <h3>General</h3>
             <span>{style}</span>
             <span>{description}</span>
             <span>{targetbatchsize}</span>
             <button onClick={this.onEdit}>Edit</button>
-            <button onClick={() => this.toggleCalculator(true)}>Calculator</button>
           </div>
         )}
         <div className='ingredient-list'>
+          <h3>Ingredients</h3>
           {Object.keys(ingredients).map((ingredientKey, i) => {
             const split = ingredientKey.split('_');
             let ingredientName = '';
@@ -99,6 +100,8 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             );
           })}
         </div>
+        {editing && <button onClick={this.onSubmit}>Submit</button>}
+        {!editing && <button onClick={() => this.toggleCalculator(true)}>Calculator</button>}
         <button onClick={this.props.onReturnToList}>Back</button>
         {calculator && <RecipeCalculatorComponent ingredients={ingredients} targetbatchsize={targetbatchsize} dictionary={dictionary} onClose={() => this.toggleCalculator(false)} />}
       </div>

@@ -8,7 +8,7 @@ const apiGet = (req, res, db) => {
   const body = req.body;
   const userID = req.get('userID');
   db.read(`SELECT * FROM ${req.params.category} WHERE userid=? OR userid=?`, [userID, 0]).then(data => {
-    console.log(data);
+    // console.log(data);
     let parsedData = Helpers.prepareForClient(data);
     res.status(200).send(Helpers.convertArrayToDataObject(parsedData));
   }).catch(err => {
@@ -20,8 +20,9 @@ const apiGet = (req, res, db) => {
 const apiPost = (req, res, db) => {
   const body = req.body;
   const userID = req.get('userID');
+  Helpers.processNewApi(req.params.category, body);
   const queryConstructor = Helpers.constructQuery(body, false, userID);
-  console.log(queryConstructor.data);
+  // console.log(queryConstructor.data);
   db.write(`INSERT INTO ${req.params.category} ${queryConstructor.query}`,
     queryConstructor.data).then(data => {
     res.status(200).send({id: data});
@@ -34,7 +35,7 @@ const apiPost = (req, res, db) => {
 const apiPut = (req, res, db) => {
   const body = req.body;
   const queryConstructor = Helpers.constructQuery(body, true, null);
-  console.log(queryConstructor.data);
+  // console.log(queryConstructor.data);
   db.write(`UPDATE ${req.params.category} SET ${queryConstructor.query} WHERE id=?`,
     queryConstructor.data).then(data => {
     res.status(200).send({id: body.id});

@@ -1,0 +1,13 @@
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-wrapper .home-image {
+  width: auto;
+  max-width: 100vw;
+
+  height: 85vh;
+  min-height: 200px;
+}

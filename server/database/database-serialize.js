@@ -19,7 +19,7 @@ const createSchema = (db) => {
 
     db.run('CREATE TABLE IF NOT EXISTS attachments (id integer PRIMARY KEY, brewid number, image text)');
     db.run(`CREATE TABLE IF NOT EXISTS recipes (id integer PRIMARY KEY, userid number, ingredients text, name text, description text,
-      style text, targetbatchsize text)`);
+      style text, targetbatchsize text, token text)`);
 
     db.run(`CREATE TABLE IF NOT EXISTS brewsteps
       (id integer PRIMARY KEY, brewid number, type text, amount text, gravity number, temperature text, time text)`);
