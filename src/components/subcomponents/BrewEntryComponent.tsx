@@ -2,7 +2,7 @@ import DictionaryComponent from 'components/DictionaryComponent';
 import { IBrewStep } from 'constants/datatypes';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
-import RecipeCalculatorComponent from './RecipeCalculatorComponent';
+import BrewStepManager from './BrewStepManager';
 
 interface IBrewEntryComponentProps {
   dictionary: any; // IDictionary;
@@ -50,12 +50,14 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
     description: '',
     editing: false,
     fermentation: [],
+    fg: '',
     image: '',
     lageringtemp: '',
     length: '',
     mash: [],
     name: '',
     notes: '',
+    og: '',
     pickingIngredients: false,
     public: 0,
     recipeid: 0,
@@ -92,8 +94,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
             <input value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
             <input value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
 
-
-            {!pickingIngredients ? (
+            {/* {!pickingIngredients ? (
               <button onClick={() => this.handleDictionaryDisplay(true)}>Edit Ingredients</button>
             ) : (
               <DictionaryComponent
@@ -102,7 +103,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
                 onSelect={this.onSelect}
                 selected={[]}
               />
-            )}
+            )} */}
           </div>
         ) : (
           <div>

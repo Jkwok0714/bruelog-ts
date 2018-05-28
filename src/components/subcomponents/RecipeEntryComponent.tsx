@@ -3,6 +3,8 @@ import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import RecipeCalculatorComponent from './RecipeCalculatorComponent';
 
+import EditableFieldComponent from '../shared/EditableFieldComponent';
+
 interface IRecipeEntryComponentProps {
   dictionary: any; // IDictionary;
   onReturnToList: () => void;
@@ -53,34 +55,34 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
     return (
       <div className='recipe-entry-wrapper'>
         <h2>{name}</h2>
-        {editing ? (
-          <div>
-            <input value={name} onChange={(e) => this.onChange('name', e)} placeholder='Name' />
-            <input value={description} onChange={(e) => this.onChange('description', e)} placeholder='Description' />
-            <input value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
-            <input value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
+        <div>
+          <h3>General</h3>
+          <EditableFieldComponent value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
+          <EditableFieldComponent value={description} onChange={(e) => this.onChange('description', e)} placeholder='Description' />
+          <EditableFieldComponent value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
+          {/* <span>{style}</span> */}
+          {/* <span>{description}</span> */}
+          {/* <span>{targetbatchsize}</span> */}
+          {editing ? (
+            <span>
+              {!pickingIngredients ? (
+                <button onClick={() => this.handleDictionaryDisplay(true)}>Pick Ingredients</button>
+              ) : (
+                <DictionaryComponent
+                  modalMode={true}
+                  onClose={() => this.handleDictionaryDisplay(false)}
+                  onSelect={this.onSelect}
+                  selected={ingredients}
+                />
+              )
+            }
+            <button onClick={this.onDoneEdit}>Done Editing Ingredients</button>
+            </span>
+          ) : (
+            <button onClick={this.onEdit}>Edit Ingredients</button>
+          )}
+        </div>
 
-
-            {!pickingIngredients ? (
-              <button onClick={() => this.handleDictionaryDisplay(true)}>Edit Ingredients</button>
-            ) : (
-              <DictionaryComponent
-                modalMode={true}
-                onClose={() => this.handleDictionaryDisplay(false)}
-                onSelect={this.onSelect}
-                selected={ingredients}
-              />
-            )}
-          </div>
-        ) : (
-          <div>
-            <h3>General</h3>
-            <span>{style}</span>
-            <span>{description}</span>
-            <span>{targetbatchsize}</span>
-            <button onClick={this.onEdit}>Edit</button>
-          </div>
-        )}
         <div className='ingredient-list'>
           <h3>Ingredients</h3>
           {Object.keys(ingredients).map((ingredientKey, i) => {
@@ -100,7 +102,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             );
           })}
         </div>
-        {editing && <button onClick={this.onSubmit}>Submit</button>}
+        <button onClick={this.onSubmit}>Submit Any Changes</button>
         {!editing && <button onClick={() => this.toggleCalculator(true)}>Calculator</button>}
         <button onClick={this.props.onReturnToList}>Back</button>
         {calculator && <RecipeCalculatorComponent ingredients={ingredients} targetbatchsize={targetbatchsize} dictionary={dictionary} onClose={() => this.toggleCalculator(false)} />}
@@ -138,6 +140,10 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   private onEdit = () => {
     this.setState({ editing: true });
   };
+
+  private onDoneEdit = () => {
+    this.setState({ editing: false });
+  }
 
   private handleAmountChange = (ingredientKey: string, e: React.FormEvent<HTMLInputElement>) => {
     const { ingredients } = this.state;

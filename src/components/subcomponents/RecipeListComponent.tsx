@@ -29,7 +29,7 @@ class RecipeListComponent extends React.Component<IRecipeListComponentProps, {}>
       <div key={ recipeItem.id }>
         <span>{ recipeItem.name }</span>
         <span>{ recipeItem.style }</span>
-        <button onClick={() => this.props.onEditRecipe(recipeItem)}>Edit</button>
+        {/* <button onClick={() => this.props.onEditRecipe(recipeItem)}>Edit</button> */}
         <button onClick={() => this.props.onViewRecipe(recipeItem)}>View</button>
       </div>
     );

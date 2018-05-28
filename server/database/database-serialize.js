@@ -26,7 +26,7 @@ const createSchema = (db) => {
     db.run(`CREATE TABLE IF NOT EXISTS brew
       (id integer PRIMARY KEY, userid number, name text, style text, image text, description text, brewdate text, bottledate text,
       mash text, boil text, fermentation text, lageringtemp text, length text, bottling text, tastingnote text, archived number,
-      recipeid number, attachments text, notes text, seriesid number, token text, public number, targetbatchsize text)`);
+      recipeid number, attachments text, notes text, seriesid number, token text, public number, targetbatchsize text, og text, fg text)`);
   });
 };
 
