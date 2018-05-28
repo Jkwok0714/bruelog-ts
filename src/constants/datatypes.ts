@@ -64,10 +64,12 @@ export interface ISeries {
 }
 
 export interface IBrewStep {
+  description?: string;
   time: string;
-  gravity: string;
-  temperature: string;
-  ingredient: string;
+  gravity?: string;
+  temperature?: string;
+  amount?: string;
+  ingredient?: string;
 }
 
 export interface IBrew {
@@ -94,4 +96,6 @@ export interface IBrew {
   token?: string;
   public: number;
   targetbatchsize: string;
+  og: string;
+  fg: string;
 }

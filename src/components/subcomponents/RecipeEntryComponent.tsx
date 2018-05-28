@@ -60,9 +60,10 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
           <EditableFieldComponent value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
           <EditableFieldComponent value={description} onChange={(e) => this.onChange('description', e)} placeholder='Description' />
           <EditableFieldComponent value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
-          {/* <span>{style}</span> */}
-          {/* <span>{description}</span> */}
-          {/* <span>{targetbatchsize}</span> */}
+        </div>
+
+        <div className='ingredient-list'>
+          <h3>Ingredients</h3>
           {editing ? (
             <span>
               {!pickingIngredients ? (
@@ -81,10 +82,6 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
           ) : (
             <button onClick={this.onEdit}>Edit Ingredients</button>
           )}
-        </div>
-
-        <div className='ingredient-list'>
-          <h3>Ingredients</h3>
           {Object.keys(ingredients).map((ingredientKey, i) => {
             const split = ingredientKey.split('_');
             let ingredientName = '';
@@ -102,7 +99,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             );
           })}
         </div>
-        <button onClick={this.onSubmit}>Submit Any Changes</button>
+        <button onClick={this.onSubmit}>Submit Any Changes</button><br />
         {!editing && <button onClick={() => this.toggleCalculator(true)}>Calculator</button>}
         <button onClick={this.props.onReturnToList}>Back</button>
         {calculator && <RecipeCalculatorComponent ingredients={ingredients} targetbatchsize={targetbatchsize} dictionary={dictionary} onClose={() => this.toggleCalculator(false)} />}
@@ -137,6 +134,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
     this.setState({ calculator: state });
   };
 
+  // These can be combined
   private onEdit = () => {
     this.setState({ editing: true });
   };

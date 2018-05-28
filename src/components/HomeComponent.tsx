@@ -27,10 +27,10 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
       {user.image && <img className='home-image' src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
 
       <div className='menu-bar'>
-        <button><Link to="settings">User Settings</Link></button>
-        <button><Link to="dictionary">Ingredient Dictionary</Link></button>
         <button><Link to="brews">Brews</Link></button>
         <button><Link to="recipes">Recipes</Link></button>
+        <button><Link to="dictionary">Ingredient Dictionary</Link></button>
+        <button><Link to="settings">User Settings</Link></button>
         <button onClick={this.logout}>Logout</button>
       </div>
     </div>);

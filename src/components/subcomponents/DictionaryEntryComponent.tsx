@@ -1,5 +1,6 @@
 import { IDictionaryEntry } from 'constants/datatypes';
 import * as React from 'react';
+import { IoCheckmarkRound, IoCloseRound, IoEdit, IoTrashA } from 'react-icons/lib/io';
 
 interface IDictionaryEntryComponentProps {
   onSubmit: (data: object) => void;
@@ -69,17 +70,17 @@ class DictionaryEntryComponent extends React.Component<IDictionaryEntryComponent
               value={flavors}
               onChange={(e) => this.onChange('flavors', e)}
               />
-              <input type='submit' value='Submit' />
+              <button type='submit'><IoCheckmarkRound/></button>
             </form>
-            {!this.props.editing && <button onClick={this.toggleEdit}>Cancel</button>}
-            {!this.props.editing && <button onClick={this.handleDelete}>Delete</button>}
+            {!this.props.editing && <button onClick={this.toggleEdit}><IoCloseRound /></button>}
+            {!this.props.editing && <button onClick={this.handleDelete}><IoTrashA /></button>}
           </div>
         ) : (
           <div>
             <span>{name}</span>
             <span>{description}</span>
             <span>{flavors}</span>
-            <button onClick={this.toggleEdit}>Edit</button>
+            <button onClick={this.toggleEdit}><IoEdit/></button>
           </div>
         )}
       </div>

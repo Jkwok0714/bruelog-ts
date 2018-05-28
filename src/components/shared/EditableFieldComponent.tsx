@@ -32,7 +32,7 @@ class EditableFieldComponent extends React.Component<IEditableFieldComponentProp
           </span>
         ) : (
           <span>
-            <span>{value}</span>
+            <span>{value || placeholder}</span>
             <button onClick={() => this.setEdit(true)}><IoEdit/></button>
           </span>
         )}

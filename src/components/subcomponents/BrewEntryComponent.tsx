@@ -4,6 +4,8 @@ import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import BrewStepManager from './BrewStepManager';
 
+import EditableFieldComponent from '../shared/EditableFieldComponent';
+
 interface IBrewEntryComponentProps {
   dictionary: any; // IDictionary;
   onReturnToList: () => void;
@@ -81,40 +83,48 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
   }
 
   public render () {
-    const { editing, description, name, style, targetbatchsize, pickingIngredients } = this.state;
+    const { editing, description, name, style, targetbatchsize, pickingIngredients, og, fg, tastingnote, notes, lageringtemp, length } = this.state;
     const { dictionary } = this.props;
 
     return (
-      <div className='recipe-entry-wrapper'>
+      <div className='brew-entry-wrapper'>
         <h2>{name}</h2>
-        {editing ? (
-          <div>
-            <input value={name} onChange={(e) => this.onChange('name', e)} placeholder='Name' />
-            <input value={description} onChange={(e) => this.onChange('description', e)} placeholder='Description' />
-            <input value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
-            <input value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target Batch Size' />
-
-            {/* {!pickingIngredients ? (
-              <button onClick={() => this.handleDictionaryDisplay(true)}>Edit Ingredients</button>
-            ) : (
-              <DictionaryComponent
-                modalMode={true}
-                onClose={() => this.handleDictionaryDisplay(false)}
-                onSelect={this.onSelect}
-                selected={[]}
-              />
-            )} */}
-          </div>
-        ) : (
-          <div>
-            <h3>General</h3>
-            <span>{style}</span>
-            <span>{description}</span>
-            <span>{targetbatchsize}</span>
-            <button onClick={this.onEdit}>Edit</button>
-          </div>
-        )}
-        {editing && <button onClick={this.onSubmit}>Submit</button>}
+        <div className='brew-section'>
+          <h3>Summary</h3>
+          <EditableFieldComponent value={name} onChange={(e) => this.onChange('name', e)} placeholder='Name' />
+          <EditableFieldComponent value={style} onChange={(e) => this.onChange('style', e)} placeholder='Style' />
+          <EditableFieldComponent value={description} onChange={(e) => this.onChange('description', e)} placeholder='Description' />
+          <EditableFieldComponent value={targetbatchsize} onChange={(e) => this.onChange('targetbatchsize', e)} placeholder='Target batch size' />
+        </div>
+        <div className='brew-section'>
+          <h3>Mash/Sparge</h3>
+        </div>
+        <div className='brew-section'>
+          <h3>Boil</h3>
+        </div>
+        <div className='brew-section'>
+          <h3>Fermentation</h3>
+          <EditableFieldComponent value={lageringtemp} onChange={(e) => this.onChange('lageringtemp', e)} placeholder='Lagering temperature' />
+          <EditableFieldComponent value={length} onChange={(e) => this.onChange('length', e)} placeholder='Lagering duration' />
+        </div>
+        <div className='brew-section'>
+          <h3>Bottling/Kegging</h3>
+          <EditableFieldComponent value={og} onChange={(e) => this.onChange('og', e)} placeholder='Original gravity' />
+          <EditableFieldComponent value={fg} onChange={(e) => this.onChange('fg', e)} placeholder='Final gravity' />
+        </div>
+        <div className='brew-section'>
+          <h3>Tasting/Finish</h3>
+          <EditableFieldComponent value={tastingnote} onChange={(e) => this.onChange('tastingnote', e)} placeholder='Tasting notes' />
+          <button onClick={this.archiveEntry}>Archive</button>
+        </div>
+        <div className='brew-section'>
+          <h3>Notes</h3>
+          <EditableFieldComponent value={notes} onChange={(e) => this.onChange('notes', e)} placeholder='Additional notes' />
+        </div>
+        <div className='brew-section'>
+          <h3>Metrics</h3>
+        </div>
+        <button onClick={this.onSubmit}>Submit</button>
         <button onClick={this.props.onReturnToList}>Back</button>
       </div>
     );
@@ -137,8 +147,12 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
     this.setState({ pickingIngredients: open });
   }
 
+  private archiveEntry = () => {
+    // Set archived
+  }
+
   private onSubmit = () => {
-    const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients', 'calculator']);
+    const data = Helpers.cloneWithoutKeys(this.state, ['editing', 'pickingIngredients']);
     this.props.onSubmit(data, this.numID > 0);
     this.setState({ editing: false });
   }
