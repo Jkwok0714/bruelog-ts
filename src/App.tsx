@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Link, Route, withRouter } from 'react-router-dom';
 
+import BrewsComponent from './components/BrewsComponent';
 import DictionaryComponent from './components/DictionaryComponent';
 import HomeComponent from './components/HomeComponent';
 import LogEntryComponent from './components/LogEntryComponent';
@@ -56,6 +57,8 @@ class App extends React.Component<IAppProps, {}> {
               <Route exact={true} path='/entry' component={ LogEntryComponent }/>
               <Route exact={true} path='/dictionary' component={ DictionaryComponent }/>
               <Route exact={true} path='/recipes' component={ RecipesComponent }/>
+              <Route exact={true} path='/brews' component={ BrewsComponent }/>
+              <Route exact={true} path='/brews/:token' component={ BrewsComponent }/>
             </div>
         ) : (
             <div>

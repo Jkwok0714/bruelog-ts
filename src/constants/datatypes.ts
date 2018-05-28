@@ -54,3 +54,44 @@ export interface IDisassembledIngredient {
   total: string;
   ratio?: number;
 }
+
+export interface ISeries {
+  id?: number;
+  userid?: number;
+  name: string;
+  image: string;
+  description: string;
+}
+
+export interface IBrewStep {
+  time: string;
+  gravity: string;
+  temperature: string;
+  ingredient: string;
+}
+
+export interface IBrew {
+  id?: number;
+  userid?: number;
+  name: string;
+  style: string;
+  image: string;
+  description: string;
+  brewdate: string;
+  bottledate: string;
+  mash: IBrewStep[];
+  boil: IBrewStep[];
+  fermentation: IBrewStep[];
+  lageringtemp: string;
+  length: string; // Lagering length
+  bottling: string;
+  tastingnote: string;
+  archived: number;
+  recipeid: number;
+  attachments: string;
+  notes: string;
+  seriesid: number;
+  token?: string;
+  public: number;
+  targetbatchsize: string;
+}

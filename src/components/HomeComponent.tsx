@@ -29,6 +29,7 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
       <div className='menu-bar'>
         <button><Link to="settings">User Settings</Link></button>
         <button><Link to="dictionary">Ingredient Dictionary</Link></button>
+        <button><Link to="brews">Brews</Link></button>
         <button><Link to="recipes">Recipes</Link></button>
         <button onClick={this.logout}>Logout</button>
       </div>
