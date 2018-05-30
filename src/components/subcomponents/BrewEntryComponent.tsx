@@ -100,7 +100,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
         </div>
         <div className='brew-section'>
           <h3>Mash/Sparge</h3>
-          <BrewStepManagerComponent dictionary={dictionary} section='mash' brewSteps={mash} onAddStep={this.onAddStep} onEditStep={this.onEditStep}/>
+          <BrewStepManagerComponent dictionary={dictionary} section='mash' brewSteps={mash} onAddStep={this.onAddStep} onDeleteStep={this.onDeleteStep} onEditStep={this.onEditStep}/>
         </div>
         <div className='brew-section'>
           <h3>Boil</h3>
@@ -159,7 +159,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
       temperature: '',
       time: ''
     };
-    window.console.log(list, this.state[list], newBrewStep);
+    // window.console.log(list, this.state[list], newBrewStep);
 
     this.setState({ [list]: this.state[list].concat([newBrewStep]) });
   }
@@ -170,8 +170,10 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
     this.setState({ [list]: newList });
   }
 
-  private onDeleteStep = (list: string, i: number, edit) => {
-    //
+  private onDeleteStep = (list: string, i: number) => {
+    const newList = this.state[list];
+    newList.splice(i, 1);
+    this.setState({ [list]: newList });
   }
 
   private archiveEntry = () => {

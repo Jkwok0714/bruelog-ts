@@ -8,6 +8,7 @@ interface IBrewStepManagerComponentProps {
   brewSteps: IBrewStep[]; // TODO: Fix
   onAddStep: (list: string) => void;
   onEditStep: (list: string, i: number, edit: any) => void;
+  onDeleteStep: (list: string, i: number) => void;
 }
 
 class BrewStepManagerComponent extends React.Component<IBrewStepManagerComponentProps, {}> {
@@ -29,6 +30,10 @@ class BrewStepManagerComponent extends React.Component<IBrewStepManagerComponent
     this.props.onAddStep(this.props.section);
   }
 
+  private onDeleteStep = (i: number) => {
+    this.props.onDeleteStep(this.props.section, i);
+  }
+
   private onDoneEditing = (index: number, data: any) => {
     this.props.onEditStep(this.props.section, index, data);
   }
@@ -36,7 +41,7 @@ class BrewStepManagerComponent extends React.Component<IBrewStepManagerComponent
   private getBlock (step: IBrewStep, i: number) {
     return (
       <div key={ 'step' + i }>
-        <BrewStepEntryComponent brewStep={step} onSubmit={this.onDoneEditing} index={i} />
+        <BrewStepEntryComponent brewStep={step} onSubmit={this.onDoneEditing} onDelete={this.onDeleteStep} index={i} />
       </div>
     );
   }

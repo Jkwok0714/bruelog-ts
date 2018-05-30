@@ -4,6 +4,7 @@ import { IoCheckmarkRound, IoCloseRound, IoEdit, IoNavicon, IoTrashA } from 'rea
 
 interface IBrewStepEntryComponentProps {
   onSubmit: (index: number, data: any) => void;
+  onDelete: (i: number) => void;
   brewStep: any;
   index: number;
 }
@@ -41,7 +42,7 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
 
   public render () {
     // const { selected, onSelect } = this.props;
-    const { editing, description, amount, gravity, ingredient, time } = this.state;
+    const { editing, description, amount, gravity, ingredient, temperature, time } = this.state;
 
     return (
       <div>
@@ -51,17 +52,35 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
           <div>
             <form onSubmit={this.handleSubmit}>
               <input
+              placeholder='Time'
+              value={time}
+              onChange={(e) => this.onChange('time', e)}
+              />
+              <input
+              placeholder='Temperature'
+              value={temperature}
+              onChange={(e) => this.onChange('temperature', e)}
+              />
+              <input
+              placeholder='Specific Gravity'
+              value={gravity}
+              onChange={(e) => this.onChange('gravity', e)}
+              />
+              <input
               placeholder='Description'
               value={description}
               onChange={(e) => this.onChange('description', e)}
               />
               <button type='submit'><IoCheckmarkRound/></button>
             </form>
-            {/* {!this.props.editing && <button onClick={this.toggleEdit}><IoCloseRound /></button>} */}
-            {/* {!this.props.editing && <button onClick={this.handleDelete}><IoTrashA /></button>} */}
+            <button onClick={this.toggleEdit}><IoCloseRound /></button>
+            <button onClick={this.handleDelete}><IoTrashA /></button>
           </div>
         ) : (
           <div>
+            <span>{time}</span>
+            <span>{temperature}</span>
+            <span>{gravity}</span>
             <span>{description}</span>
             <button onClick={this.toggleEdit}><IoEdit/></button>
           </div>
@@ -71,13 +90,7 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
   }
 
   private handleDelete = () => {
-    // if (!this.props.item || !this.props.onDelete) {
-    //   return;
-    // }
-    // const id = this.props.item.id || 0;
-    // const { type } = this.props;
-    //
-    // this.props.onDelete(type, id);
+    this.props.onDelete(this.props.index);
   }
 
   private handleSelect = () => {
