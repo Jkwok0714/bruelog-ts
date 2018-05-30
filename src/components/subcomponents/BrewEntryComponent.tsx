@@ -2,7 +2,7 @@ import DictionaryComponent from 'components/DictionaryComponent';
 import { IBrewStep } from 'constants/datatypes';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
-import BrewStepManager from './BrewStepManager';
+import BrewStepManagerComponent from './BrewStepManagerComponent';
 
 import EditableFieldComponent from '../shared/EditableFieldComponent';
 
@@ -39,6 +39,8 @@ interface IBrewEntryComponentState {
   token?: string;
   public: number;
   targetbatchsize: string;
+
+  [x: string]: any;
 }
 
 class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrewEntryComponentState> {
@@ -83,7 +85,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
   }
 
   public render () {
-    const { editing, description, name, style, targetbatchsize, pickingIngredients, og, fg, tastingnote, notes, lageringtemp, length } = this.state;
+    const { editing, description, name, style, targetbatchsize, pickingIngredients, og, fg, tastingnote, notes, lageringtemp, length, mash } = this.state;
     const { dictionary } = this.props;
 
     return (
@@ -98,6 +100,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
         </div>
         <div className='brew-section'>
           <h3>Mash/Sparge</h3>
+          <BrewStepManagerComponent dictionary={dictionary} section='mash' brewSteps={mash} onAddStep={this.onAddStep} onEditStep={this.onEditStep}/>
         </div>
         <div className='brew-section'>
           <h3>Boil</h3>
@@ -130,7 +133,7 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
     );
   }
 
-  public onSelect = (type: string, id: number) => {
+  public onSelect = (target: string, type: string, id: number) => {
     // const storageString = `${type}_${id}`;
     // const { ingredients } = this.state;
     // if (this.state.ingredients[storageString]) {
@@ -145,6 +148,30 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
 
   public handleDictionaryDisplay = (open: boolean) => {
     this.setState({ pickingIngredients: open });
+  }
+
+  private onAddStep = (list: string) => {
+    const newBrewStep = {
+      amount: '',
+      description: '',
+      gravity: '',
+      ingredient: '',
+      temperature: '',
+      time: ''
+    };
+    window.console.log(list, this.state[list], newBrewStep);
+
+    this.setState({ [list]: this.state[list].concat([newBrewStep]) });
+  }
+
+  private onEditStep = (list: string, i: number, edit: any) => {
+    const newList = this.state[list];
+    newList[i] = edit;
+    this.setState({ [list]: newList });
+  }
+
+  private onDeleteStep = (list: string, i: number, edit) => {
+    //
   }
 
   private archiveEntry = () => {
