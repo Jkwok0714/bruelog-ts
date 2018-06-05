@@ -1,4 +1,5 @@
-import { IBrewStep, IDictionaryEntry } from 'constants/datatypes';
+import DictionaryComponent from 'components/DictionaryComponent';
+import { IBrewStep, IDictionary, IDictionaryEntry } from 'constants/datatypes';
 import * as React from 'react';
 import { IoCheckmarkRound, IoCloseRound, IoEdit, IoNavicon, IoTrashA } from 'react-icons/lib/io';
 
@@ -7,11 +8,12 @@ interface IBrewStepEntryComponentProps {
   onDelete: (i: number) => void;
   brewStep: any;
   index: number;
+  dictionary: IDictionary;
 }
 
 interface IBrewStepEntryComponentState extends IBrewStep {
   editing: boolean;
-
+  pickingIngredients: boolean;
 }
 
 // Name, flavors, desc
@@ -23,6 +25,7 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
     editing: false,
     gravity: '',
     ingredient: '',
+    pickingIngredients: false,
     temperature: '',
     time: ''
   }
@@ -41,8 +44,18 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
   }
 
   public render () {
-    // const { selected, onSelect } = this.props;
-    const { editing, description, amount, gravity, ingredient, temperature, time } = this.state;
+    const { editing, description, amount, gravity, ingredient, temperature, time, pickingIngredients } = this.state;
+    const { dictionary } = this.props;
+
+    let ingredientName = '';
+    if (ingredient !== '') {
+      const split = ingredient.split('_');
+      try {
+        ingredientName = dictionary[split[0]][split[1]].name;
+      } catch (e) {
+        window.console.error('Failed finding name', split, e);
+      }
+    }
 
     return (
       <div>
@@ -50,6 +63,18 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
         {/* {selected !== undefined && <input type='checkbox' checked={selected} onChange={this.handleSelect}/>} */}
         {editing ? (
           <div>
+            {/* <span /> */}
+            <span>Ingredient:{ingredientName}</span>
+            {!pickingIngredients ? (
+              <button onClick={() => this.handleDictionaryDisplay(true)}>Pick Ingredients</button>
+            ) : (
+              <DictionaryComponent
+                modalMode={true}
+                onClose={() => this.handleDictionaryDisplay(false)}
+                onSelect={this.onSelect}
+                selected={ingredient}
+              />
+            )}
             <form onSubmit={this.handleSubmit}>
               <input
               placeholder='Time'
@@ -79,6 +104,7 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
         ) : (
           <div>
             <span>{time}</span>
+            <span>Ingredient:{ingredientName}</span>
             <span>{temperature}</span>
             <span>{gravity}</span>
             <span>{description}</span>
@@ -87,6 +113,16 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
         )}
       </div>
     );
+  }
+
+  public onSelect = (type: string, id: number) => {
+    const storageString = `${type}_${id}`;
+    this.setState({ ingredient: storageString });
+    this.handleDictionaryDisplay(false);
+  }
+
+  public handleDictionaryDisplay = (open: boolean) => {
+    this.setState({ pickingIngredients: open });
   }
 
   private handleDelete = () => {

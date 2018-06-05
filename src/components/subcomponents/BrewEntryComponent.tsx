@@ -104,9 +104,11 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
         </div>
         <div className='brew-section'>
           <h3>Boil</h3>
+          <BrewStepManagerComponent dictionary={dictionary} section='boil' brewSteps={mash} onAddStep={this.onAddStep} onDeleteStep={this.onDeleteStep} onEditStep={this.onEditStep}/>
         </div>
         <div className='brew-section'>
           <h3>Fermentation</h3>
+          <BrewStepManagerComponent dictionary={dictionary} section='fermentation' brewSteps={mash} onAddStep={this.onAddStep} onDeleteStep={this.onDeleteStep} onEditStep={this.onEditStep}/>
           <EditableFieldComponent value={lageringtemp} onChange={(e) => this.onChange('lageringtemp', e)} placeholder='Lagering temperature' />
           <EditableFieldComponent value={length} onChange={(e) => this.onChange('length', e)} placeholder='Lagering duration' />
         </div>
@@ -133,19 +135,6 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
     );
   }
 
-  public onSelect = (target: string, type: string, id: number) => {
-    // const storageString = `${type}_${id}`;
-    // const { ingredients } = this.state;
-    // if (this.state.ingredients[storageString]) {
-    //   const setTo = Object.assign({}, ingredients);
-    //   delete setTo[storageString];
-    //   window.console.log('remove', storageString, 'get', setTo);
-    //   this.setState({ ingredients: setTo });
-    // } else {
-    //   this.setState({ ingredients: Object.assign({}, ingredients, { [storageString]: '0oz' }) })
-    // }
-  }
-
   public handleDictionaryDisplay = (open: boolean) => {
     this.setState({ pickingIngredients: open });
   }
@@ -159,7 +148,6 @@ class BrewEntryComponent extends React.Component<IBrewEntryComponentProps, IBrew
       temperature: '',
       time: ''
     };
-    // window.console.log(list, this.state[list], newBrewStep);
 
     this.setState({ [list]: this.state[list].concat([newBrewStep]) });
   }

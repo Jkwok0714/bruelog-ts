@@ -19,7 +19,6 @@ class BrewStepManagerComponent extends React.Component<IBrewStepManagerComponent
 
   public render () {
     const { brewSteps, onAddStep } = this.props;
-    // window.console.log(brewSteps);
     return (<div className='brew-steps'>
       {brewSteps.map((step: IBrewStep, i: number) => this.getBlock(step, i))}
       <button onClick={this.onAddStep}>Add</button>
@@ -41,7 +40,7 @@ class BrewStepManagerComponent extends React.Component<IBrewStepManagerComponent
   private getBlock (step: IBrewStep, i: number) {
     return (
       <div key={ 'step' + i }>
-        <BrewStepEntryComponent brewStep={step} onSubmit={this.onDoneEditing} onDelete={this.onDeleteStep} index={i} />
+        <BrewStepEntryComponent brewStep={step} onSubmit={this.onDoneEditing} onDelete={this.onDeleteStep} index={i} dictionary={this.props.dictionary} />
       </div>
     );
   }
