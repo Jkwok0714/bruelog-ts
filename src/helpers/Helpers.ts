@@ -78,6 +78,21 @@ class Helpers {
       return prev[key] < curr[key] ? prev : curr;
     });
   }
+
+  public static getStorageString (type: string, id: number) {
+    return `${type}_${id}`;
+  }
+
+  public static parseStorageString (ingredientKey: string, dictionary) {
+    const split = ingredientKey.split('_');
+    let ingredientName = '';
+    try {
+      ingredientName = dictionary[split[0]][split[1]].name;
+    } catch (e) {
+      window.console.error('Failed finding name', split, e);
+    }
+    return ingredientName;
+  }
 }
 
 export default Helpers;

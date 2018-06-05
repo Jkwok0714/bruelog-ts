@@ -11,6 +11,12 @@ export interface ILooseObject {
   [k: string]: any;
 }
 
+export interface IUser {
+  id: number;
+  image?: string;
+  username: string;
+}
+
 export interface IDictionaryCategory {
   malts?: IDictionaryEntry[];
   hops?: IDictionaryEntry[];
@@ -70,6 +76,10 @@ export interface IBrewStep {
   temperature?: string;
   amount?: string;
   ingredient?: string;
+}
+
+export interface IIngredientMap {
+  [k: string]: string;
 }
 
 export interface IBrew {

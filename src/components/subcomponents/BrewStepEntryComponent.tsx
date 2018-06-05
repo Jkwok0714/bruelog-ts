@@ -1,5 +1,6 @@
 import DictionaryComponent from 'components/DictionaryComponent';
 import { IBrewStep, IDictionary, IDictionaryEntry } from 'constants/datatypes';
+import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import { IoCheckmarkRound, IoCloseRound, IoEdit, IoNavicon, IoTrashA } from 'react-icons/lib/io';
 
@@ -47,15 +48,8 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
     const { editing, description, amount, gravity, ingredient, temperature, time, pickingIngredients } = this.state;
     const { dictionary } = this.props;
 
-    let ingredientName = '';
-    if (ingredient !== '') {
-      const split = ingredient.split('_');
-      try {
-        ingredientName = dictionary[split[0]][split[1]].name;
-      } catch (e) {
-        window.console.error('Failed finding name', split, e);
-      }
-    }
+    const ingredientName = Helpers.parseStorageString(ingredient, dictionary);
+    const hasIngredient = ingredient !== '';
 
     return (
       <div>
@@ -81,6 +75,11 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
               value={time}
               onChange={(e) => this.onChange('time', e)}
               />
+              {hasIngredient && <input
+              placeholder='Amount'
+              value={amount}
+              onChange={(e) => this.onChange('amount', e)}
+              />}
               <input
               placeholder='Temperature'
               value={temperature}
@@ -105,6 +104,7 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
           <div>
             <span>{time}</span>
             <span>Ingredient:{ingredientName}</span>
+            {hasIngredient && <span>{amount}</span>}
             <span>{temperature}</span>
             <span>{gravity}</span>
             <span>{description}</span>
@@ -116,7 +116,7 @@ class BrewStepEntryComponent extends React.Component<IBrewStepEntryComponentProp
   }
 
   public onSelect = (type: string, id: number) => {
-    const storageString = `${type}_${id}`;
+    const storageString = Helpers.getStorageString(type, id);
     this.setState({ ingredient: storageString });
     this.handleDictionaryDisplay(false);
   }

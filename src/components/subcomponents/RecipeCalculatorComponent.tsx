@@ -1,10 +1,10 @@
-import { IAPIDataResponse, IDisassembledIngredient } from 'constants/datatypes';
+import { IAPIDataResponse, IDictionary, IDisassembledIngredient, IIngredientMap } from 'constants/datatypes';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 
 interface IRecipeCalculatorComponentProps {
-  dictionary: any;
-  ingredients: any;
+  dictionary: IDictionary;
+  ingredients: IIngredientMap;
   targetbatchsize: string;
   onClose: () => void;
 }

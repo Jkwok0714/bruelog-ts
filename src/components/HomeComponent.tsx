@@ -1,6 +1,7 @@
 import DataActions from 'actions/DataActions';
 import LoginActions from 'actions/LoginActions';
 import { BASE_URL } from 'constants/';
+import { IUser } from 'constants/datatypes';
 import APIService from 'helpers/APIService';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -11,13 +12,20 @@ import './styles/home.css';
 interface IHomeComponentProps {
   applyDictionaryData: (data) => void;
   message: string;
-  user: any;
+  user: IUser;
 
   changeLoginState: (state) => void;
   changeUser: (user) => void;
 }
 
 class HomeComponent extends React.Component<IHomeComponentProps, {}> {
+  public linkNavBar = [
+    { link: 'brews', label: 'Brews' },
+    { link: 'recipes', label: 'Recipes' },
+    { link: 'dictionary', label: 'Ingredient Dictionary' },
+    { link: 'settings', label: 'User Settings' }
+  ];
+
   public render () {
     const { message, user } = this.props;
     const username = user ? user.username : '';
@@ -26,13 +34,10 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
       <h1>{ `Hello ${username}.` }</h1>
       {user.image && <img className='home-image' src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
 
-      <div className='menu-bar'>
-        <button><Link to="brews">Brews</Link></button>
-        <button><Link to="recipes">Recipes</Link></button>
-        <button><Link to="dictionary">Ingredient Dictionary</Link></button>
-        <button><Link to="settings">User Settings</Link></button>
+      <nav className='menu-bar'>
+        {this.linkNavBar.map(btn => <button key={btn.label}><Link to={btn.link}>{btn.label}</Link></button>)}
         <button onClick={this.logout}>Logout</button>
-      </div>
+      </nav>
     </div>);
   }
 

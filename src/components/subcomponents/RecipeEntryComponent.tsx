@@ -1,4 +1,5 @@
 import DictionaryComponent from 'components/DictionaryComponent';
+import { IDictionary, IRecipe, IUser } from 'constants/datatypes';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import RecipeCalculatorComponent from './RecipeCalculatorComponent';
@@ -6,11 +7,11 @@ import RecipeCalculatorComponent from './RecipeCalculatorComponent';
 import EditableFieldComponent from '../shared/EditableFieldComponent';
 
 interface IRecipeEntryComponentProps {
-  dictionary: any; // IDictionary;
+  dictionary: IDictionary; // IDictionary;
   onReturnToList: () => void;
-  onSubmit: (data: any, update: boolean) => void;
-  editRecipe?: any; // IRecipe
-  viewRecipe?: any;
+  onSubmit: (data: IRecipe, update: boolean) => void;
+  editRecipe?: IRecipe; // IRecipe
+  viewRecipe?: IRecipe;
 }
 
 interface IRecipeEntryComponentState {
@@ -40,11 +41,11 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
 
   public componentDidMount () {
     if (this.props.editRecipe) {
-      this.setState(Object.assign({ editing: true }, this.props.editRecipe ));
-      this.numID = this.props.editRecipe.id;
+      this.setState(Object.assign({ editing: true }, this.props.editRecipe as any ));
+      this.numID = this.props.editRecipe.id as number;
     } else if (this.props.viewRecipe) {
-      this.setState(Object.assign(this.state, this.props.viewRecipe));
-      this.numID = this.props.viewRecipe.id;
+      this.setState(Object.assign(this.state, this.props.viewRecipe as any));
+      this.numID = this.props.viewRecipe.id as number;
     }
   }
 
@@ -83,13 +84,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
             <button onClick={this.onEdit}>Edit Ingredients</button>
           )}
           {Object.keys(ingredients).map((ingredientKey, i) => {
-            const split = ingredientKey.split('_');
-            let ingredientName = '';
-            try {
-              ingredientName = dictionary[split[0]][split[1]].name;
-            } catch (e) {
-              window.console.error('Failed finding name', split, e);
-            }
+            const ingredientName = Helpers.parseStorageString(ingredientKey, dictionary);
 
             return (
               <div className='list-entry' key={ingredientKey}>
@@ -108,7 +103,7 @@ class RecipeEntryComponent extends React.Component<IRecipeEntryComponentProps, I
   }
 
   public onSelect = (type: string, id: number) => {
-    const storageString = `${type}_${id}`;
+    const storageString = Helpers.getStorageString(type, id);
     const { ingredients } = this.state;
     if (this.state.ingredients[storageString]) {
       const setTo = Object.assign({}, ingredients);

@@ -1,5 +1,5 @@
 import DictionaryComponent from 'components/DictionaryComponent';
-import { IBrewStep } from 'constants/datatypes';
+import { IBrewStep, IDictionary } from 'constants/datatypes';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
 import BrewStepManagerComponent from './BrewStepManagerComponent';
@@ -7,10 +7,10 @@ import BrewStepManagerComponent from './BrewStepManagerComponent';
 import EditableFieldComponent from '../shared/EditableFieldComponent';
 
 interface IBrewEntryComponentProps {
-  dictionary: any; // IDictionary;
+  dictionary: IDictionary; // IDictionary;
   onReturnToList: () => void;
   onSubmit: (data: any, update: boolean) => void;
-  editBrew?: any; // IRecipe
+  editBrew?: any;
   viewBrew?: any;
 }
 

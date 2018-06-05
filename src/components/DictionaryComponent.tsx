@@ -1,6 +1,6 @@
 import DataActions from 'actions/DataActions';
 import { BASE_URL } from 'constants/';
-import { IDictionary, IDictionaryCategory, IDictionaryEntry } from 'constants/datatypes';
+import { IDictionary, IDictionaryCategory, IDictionaryEntry, IUser } from 'constants/datatypes';
 import APIService from 'helpers/APIService';
 import Helpers from 'helpers/Helpers';
 import * as React from 'react';
@@ -27,7 +27,7 @@ interface IDictionaryComponentPropsFromParent {
 interface IDictionaryComponentProps extends IDictionaryComponentPropsFromParent {
   dictionary: IDictionary;
   message: string;
-  user: any;
+  user: IUser;
 
   applyDictionaryData: (data) => void;
   updateDictionary: (data: IDictionaryCategory) => void;
@@ -47,6 +47,13 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     showingDictionary: []
   };
 
+  public dictionaryNavBar = [
+    { onClick: () => this.changeView(VIEWS.HOPS), label: 'Hops' },
+    { onClick: () => this.changeView(VIEWS.MALTS), label: 'Malts' },
+    { onClick: () => this.changeView(VIEWS.YEAST), label: 'Yeast' },
+    { onClick: () => this.changeView(VIEWS.OTHER), label: 'Other' }
+  ];
+
   public render () {
     const { message, user, dictionary, modalMode, selected, onSelect } = this.props;
     const { display, showingAddEntry } = this.state;
@@ -54,15 +61,13 @@ class DictionaryComponent extends React.Component<IDictionaryComponentProps, IDi
     const username = user ? user.username : '';
 
     const dictionaryObject = dictionary[this.getTypeString(display)];
-
     const dictionaryDisplay = Helpers.objectValues(dictionaryObject);
 
     return (<div className={`dictionary-wrapper ${modalMode ? 'modal' : ''}`}>
       <h1>Ingredient Dictionary</h1>
-      <button onClick={() => this.changeView(VIEWS.HOPS)}>Hops</button>
-      <button onClick={() => this.changeView(VIEWS.MALTS)}>Malts</button>
-      <button onClick={() => this.changeView(VIEWS.YEAST)}>Yeast</button>
-      <button onClick={() => this.changeView(VIEWS.OTHER)}>Other</button>
+      <nav>
+        {this.dictionaryNavBar.map(btn => <button key={btn.label} onClick={btn.onClick}>{btn.label}</button>)}
+      </nav>
 
       <div className='dictionary-list'>
         {dictionaryDisplay.map((entry: IDictionaryEntry) => {
