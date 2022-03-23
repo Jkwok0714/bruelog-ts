@@ -2,6 +2,7 @@ import * as React from 'react';
 import Select from 'react-select';
 
 import { IBentoAccount, IBentoUser } from 'constants/bentoTypes';
+import { ORGS } from 'constants/dummyData';
 import DummyDataDict from 'constants/DummyDataDict';
 import APIService from 'helpers/APIService';
 import { initializeBento } from 'helpers/Bento';
@@ -47,6 +48,7 @@ export default function LoginPresetComponent({
   const [selectedUser, setSelectedUser] = React.useState<IBentoUser>(
     selectedAccount.users![0]
   );
+  const [selectedOrg, setSelectedOrg] = React.useState<IMenuOption>(ORGS[0]);
 
   React.useEffect(() => {
     setUserList(userMenuOpts(selectedAccount.users!));
@@ -59,8 +61,16 @@ export default function LoginPresetComponent({
     setSelectedUser(acc.users![firstUId]);
   }, []);
 
-  const handleUserSelect = React.useCallback((option: IMenuOption) => {
-    setSelectedUser(accounts![selectedAccount.id]!.users![option.value]);
+  const handleUserSelect = React.useCallback(
+    (option: IMenuOption) => {
+      const user = accounts![selectedAccount.id]!.users![option.value];
+      setSelectedUser(user);
+    },
+    [selectedAccount]
+  );
+
+  const handleOrgSelect = React.useCallback((option: IMenuOption) => {
+    setSelectedOrg(option);
   }, []);
 
   const userOption = React.useMemo(
@@ -110,7 +120,16 @@ export default function LoginPresetComponent({
   return (
     <div className="login-wrapper">
       <div className="selection-box">
-        <h1>Brüe Logs TS</h1>
+        <h1>🍻 Brüe Logs TS</h1>
+        <h3>Organization</h3>
+        <div className="dark-text">
+          <Select
+            options={ORGS}
+            value={selectedOrg}
+            onChange={handleOrgSelect}
+            className="select"
+          />
+        </div>
         <h3>Account</h3>
         <div className="dark-text">
           <Select
@@ -129,7 +148,11 @@ export default function LoginPresetComponent({
             className="select"
           />
         </div>
-        <button className="main-button" onClick={submitLogin}>
+        <button
+          className="main-button"
+          onClick={submitLogin}
+          disabled={!selectedOrg || !selectedUser || !selectedAccount}
+        >
           Enter
         </button>
       </div>

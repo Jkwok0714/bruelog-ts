@@ -29,7 +29,10 @@
     "init-db": "node server/database/init.js",
     "document": "jsdoc server src -r -R README.md -d docs",
     "lint": "tslint src/**/*.ts",
-    "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'red,yellow' \"npm run start\" \"npm run server-dev\""
+    "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'red,yellow' \"npm run start\" \"npm run server-dev\"",
+    "payday-prod": "cd ../paydayio-prod && yarn dev",
+    "payday": "cd ../paydayio && yarn dev",
+    "bento": "concurrently --names 'PAYDAY,PAYDAY-PROD,BRUELOGS,BRUELOGS-SERVER' --prefix-colors 'red,yellow,green,cyan' \"npm run payday\" \"npm run payday-prod\" \"npm run start\" \"npm run server-dev\" "
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",

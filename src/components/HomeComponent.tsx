@@ -32,22 +32,24 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
 
     return (
       <div className="home-wrapper">
-        <h1>{`Hello ${username}.`}</h1>
-        {user.image && (
-          <img
-            className="home-image"
-            src={`${BASE_URL}/uploads/${user.id}/${user.image}`}
-          />
-        )}
+        <header className="header">
+          <h1>{`Hello ${username}.`}</h1>
+          {user.image && (
+            <img
+              className="home-image"
+              src={`${BASE_URL}/uploads/${user.id}/${user.image}`}
+            />
+          )}
 
-        <nav className="menu-bar">
-          {this.linkNavBar.map((btn) => (
-            <button key={btn.label}>
-              <Link to={btn.link}>{btn.label}</Link>
-            </button>
-          ))}
-          <button onClick={this.logout}>Logout</button>
-        </nav>
+          <nav className="menu-bar">
+            {this.linkNavBar.map((btn) => (
+              <button key={btn.label}>
+                <Link to={btn.link}>{btn.label}</Link>
+              </button>
+            ))}
+            <button onClick={this.logout}>Logout</button>
+          </nav>
+        </header>
 
         <bento-embed />
       </div>

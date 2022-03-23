@@ -30,7 +30,21 @@ export const nameToUser = (
   return defaults;
 };
 
+export const ORGS = [
+  { value: '24e31b38-9a4e-11ec-98eb-2358ee54c665', label: 'Selective Mutism' },
+  {
+    label: 'Lunchbox IO - A Bento Rival',
+    value: 'ca46938a-8ad0-11ec-9abe-a790c864d627',
+  },
+  { value: '3cc2d90a-1a3d-11ec-88ae-3f7aae184c0f', label: 'Testinato' },
+];
+
 const DEFAULT_ACCOUNTS: IBentoAccountSeed[] = [
+  {
+    id: 'bentonians',
+    name: 'Bentonian Trust Fund',
+    users: ['Ozzy Barros', 'Maya Gutierrez', 'Polly Gould', 'Bonnie Wang'],
+  },
   {
     id: 'chds',
     name: 'Chaldea Security',
@@ -40,6 +54,34 @@ const DEFAULT_ACCOUNTS: IBentoAccountSeed[] = [
       'Gudao Fujimaru',
       'Gudako Fujimaru',
     ],
+  },
+  {
+    id: 'vlk',
+    name: 'Valkaron',
+    users: [
+      'Serenna Arsenath',
+      'Varias Naverti',
+      'Valin Scryber',
+      'Ashera Relindi',
+      'Armadus Broghton',
+      'Linvi Askelore',
+    ],
+  },
+  {
+    id: 'insmn',
+    name: 'Insomnium Music Group',
+    users: [
+      'Markus Vanhala',
+      'Niilo Sevänen',
+      'Markus Hirvonen',
+      'Ville Friman',
+      'Jani Liimatainen',
+    ],
+  },
+  {
+    id: 'bttbls',
+    name: 'Combat Robotics Clan',
+    users: ['Jake Ewert', 'Jonathon Schultz', 'Ray Billings'],
   },
 ];
 
