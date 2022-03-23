@@ -3,22 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.26.1",
     "body-parser": "^1.18.2",
+    "chance": "^1.1.8",
     "express": "^4.16.3",
     "formidable": "^1.2.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
+    "react": "^16.8.0",
+    "react-dom": "^16.14.0",
     "react-icons": "^2.2.7",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts-ts": "2.15.1",
+    "react-select": "^5.2.2",
     "redux": "^4.0.0",
-    "sqlite3": "^4.0.4"
+    "sqlite3": "^4.2.0"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "PORT=3002 react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
@@ -26,15 +28,17 @@
     "server-dev": "nodemon server/index.js",
     "init-db": "node server/database/init.js",
     "document": "jsdoc server src -r -R README.md -d docs",
-    "lint": "tslint src/**/*.ts"
+    "lint": "tslint src/**/*.ts",
+    "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'red,yellow' \"npm run start\" \"npm run server-dev\""
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.0",
-    "@types/react": "^16.3.13",
+    "@types/react": "^16.8.0",
     "@types/react-dom": "^16.0.5",
     "@types/react-router-dom": "^4.2.6",
-    "jsdoc": "^3.5.5",
+    "concurrently": "^7.0.0",
+    "jsdoc": "^3.6.10",
     "nodemon": "^1.18.9",
     "typescript": "^2.8.3"
   }

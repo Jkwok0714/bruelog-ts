@@ -27,17 +27,25 @@ const uploadPath = __dirname + '/uploads';
 
 // Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 app.use((req, res, next) => {
-    Helpers.log(`-${req.method} REQUEST: ${req.url}`, 'C')
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,userID');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
+  Helpers.log(`-${req.method} REQUEST: ${req.url}`, 'C');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
+  res.setHeader(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  );
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With,content-type,userID'
+  );
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
 });
 
 //Routes
@@ -56,18 +64,21 @@ app.post('/dummy-data', (req, res) => {
 });
 
 app.get('/test-get-users', (req, res) => {
-  db.testGetUsers().then(data => {
-    res.status(200).send(JSON.stringify(data));
-  }).catch(err => {
-    Helpers.log(err, 'R');
-    res.status(500).send(err);
-  });
+  db.testGetUsers()
+    .then((data) => {
+      res.status(200).send(JSON.stringify(data));
+    })
+    .catch((err) => {
+      Helpers.log(err, 'R');
+      res.status(500).send(err);
+    });
 });
 
 app.get('/uploads/:uploader/:imageName', (req, res) => {
-  res.sendFile(path.join(uploadPath, req.params.uploader, req.params.imageName));
+  res.sendFile(
+    path.join(uploadPath, req.params.uploader, req.params.imageName)
+  );
 });
-
 
 app.put('/dictionary', (req, res) => {
   DictionaryHandler.handleUpdateEntry(req, res, db);
@@ -83,26 +94,26 @@ app.delete('/dictionary', (req, res) => {
 
 app.get('/dictionary', (req, res) => {
   DictionaryHandler.getUserDictionaries(req, res, db);
-})
+});
 
 /**
  * API Handling
  */
 
 app.get('/api/:category', (req, res) => {
- ApiHandler.apiGet(req, res, db);
+  ApiHandler.apiGet(req, res, db);
 });
 
 app.post('/api/:category', (req, res) => {
- ApiHandler.apiPost(req, res, db);
+  ApiHandler.apiPost(req, res, db);
 });
 
 app.put('/api/:category', (req, res) => {
- ApiHandler.apiPut(req, res, db);
+  ApiHandler.apiPut(req, res, db);
 });
 
 app.delete('/api/:category', (req, res) => {
- ApiHandler.apiDelete(req, res, db);
+  ApiHandler.apiDelete(req, res, db);
 });
 
 /**
@@ -147,7 +158,8 @@ app.post('/upload', (req, res) => {
         const filename = `${token}.${extension}`;
         const uploadPathWithUsername = `${uploadPath}/${user}`;
 
-        if (purpose === 'userImage') UserActions.assignImage(filename, user, uploadPathWithUsername, db);
+        if (purpose === 'userImage')
+          UserActions.assignImage(filename, user, uploadPathWithUsername, db);
 
         const oldPath = files.uploadFile.path;
         const newPath = `${uploadPathWithUsername}/${filename}`;
@@ -175,10 +187,12 @@ app.post('/upload', (req, res) => {
 });
 
 // Start the server
-db.initialize().then(() => {
-  app.listen(Constants.PORT_NUMBER, () => {
-    Helpers.log(`Server listening on port ${Constants.PORT_NUMBER}`, 'C');
+db.initialize()
+  .then(() => {
+    app.listen(Constants.PORT_NUMBER, () => {
+      Helpers.log(`Server listening on port ${Constants.PORT_NUMBER}`, 'C');
+    });
+  })
+  .catch((err) => {
+    Helpers.log(`Error starting server/db: ${err}`, 'R');
   });
-}).catch(err => {
-  Helpers.log(`Error starting server/db: ${err}`, 'R');
-});

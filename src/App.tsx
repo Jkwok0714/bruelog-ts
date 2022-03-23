@@ -5,8 +5,7 @@ import Helpers from 'helpers/Helpers';
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Link, Route, withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 
 import BrewsComponent from './components/BrewsComponent';
 import DictionaryComponent from './components/DictionaryComponent';
@@ -29,20 +28,22 @@ interface IAppProps {
 }
 
 class App extends React.Component<IAppProps, {}> {
-  public componentDidMount () {
-      const { changeLoginState, changeUser } = this.props;
+  public componentDidMount() {
+    const { changeLoginState, changeUser } = this.props;
 
-      const loginCache = Helpers.readUserData();
-      if (loginCache) {
-        changeLoginState(true);
-        changeUser(loginCache);
-        // Logged in, get the dictionary and other required data
-        APIService.get(DICTIONARY_PATH).then((data: any) => {
+    const loginCache = Helpers.readUserData();
+    if (loginCache) {
+      changeLoginState(true);
+      changeUser(loginCache);
+      // Logged in, get the dictionary and other required data
+      APIService.get(DICTIONARY_PATH)
+        .then((data: any) => {
           this.props.applyDictionaryData(data.data);
-        }).catch(err => {
+        })
+        .catch((err) => {
           // handle error
         });
-      }
+    }
   }
 
   public render() {
@@ -51,20 +52,32 @@ class App extends React.Component<IAppProps, {}> {
     return (
       <div className="App">
         {loggedIn ? (
-            <div>
-              <Route exact={true} path='/' component={ HomeComponent }/>
-              <Route exact={true} path='/settings' component={ ManagementComponent }/>
-              <Route exact={true} path='/entry' component={ LogEntryComponent }/>
-              <Route exact={true} path='/dictionary' component={ DictionaryComponent }/>
-              <Route exact={true} path='/recipes' component={ RecipesComponent }/>
-              <Route exact={true} path='/brews' component={ BrewsComponent }/>
-              <Route exact={true} path='/brews/:token' component={ BrewsComponent }/>
-            </div>
+          <div>
+            <Route exact={true} path="/" component={HomeComponent} />
+            <Route
+              exact={true}
+              path="/settings"
+              component={ManagementComponent}
+            />
+            <Route exact={true} path="/entry" component={LogEntryComponent} />
+            <Route
+              exact={true}
+              path="/dictionary"
+              component={DictionaryComponent}
+            />
+            <Route exact={true} path="/recipes" component={RecipesComponent} />
+            <Route exact={true} path="/brews" component={BrewsComponent} />
+            <Route
+              exact={true}
+              path="/brews/:token"
+              component={BrewsComponent}
+            />
+          </div>
         ) : (
-            <div>
-              <Route exact={true} path='/' component={ LoginComponent }/>
-              <Route exact={true} path='/signup' component={ SignupComponent }/>
-            </div>
+          <div>
+            <Route exact={true} path="/" component={LoginComponent} />
+            <Route exact={true} path="/signup" component={SignupComponent} />
+          </div>
         )}
       </div>
     );
@@ -73,17 +86,21 @@ class App extends React.Component<IAppProps, {}> {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.loggedIn,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    applyDictionaryData: (data) => dispatch(DataActions.applyDictionaryData(data)),
-    changeLoginState: (loginState) => dispatch(LoginActions.changeLoginState(loginState)),
+    applyDictionaryData: (data) =>
+      dispatch(DataActions.applyDictionaryData(data)),
+    changeLoginState: (loginState) =>
+      dispatch(LoginActions.changeLoginState(loginState)),
     changeMessage: (message) => dispatch(LoginActions.changeMessage(message)),
-    changeUser: (user) => dispatch(LoginActions.changeUser(user))
+    changeUser: (user) => dispatch(LoginActions.changeUser(user)),
   };
-}
+};
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App as React.ComponentClass<any>));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(App as React.ComponentClass<any>)
+);
