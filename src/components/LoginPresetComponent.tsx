@@ -97,14 +97,14 @@ export default function LoginPresetComponent({
 
       const tryLogin = async () => {
         const res = (await APIService.post(LOGIN_PATH, data)) as any;
-        changeLoginState(true);
-        changeUser(res.data);
         Helpers.setUserData(res.data);
         Helpers.setBentoUserData({
           account: selectedAccount,
           org: selectedOrg.label,
           user: selectedUser,
         });
+        changeLoginState(true);
+        changeUser(res.data);
         Helpers.setCookie('LOGIN_COOKIE_NAME', selectedUser.fullName, 720);
 
         initializeBento(selectedAccount, selectedUser);
