@@ -1,6 +1,7 @@
 import DataActions from 'actions/DataActions';
 import LoginActions from 'actions/LoginActions';
 import APIService from 'helpers/APIService';
+import { initializeBento, installBento } from 'helpers/Bento';
 import Helpers from 'helpers/Helpers';
 
 import * as React from 'react';
@@ -31,6 +32,8 @@ class App extends React.Component<IAppProps, {}> {
   public componentDidMount() {
     const { changeLoginState, changeUser } = this.props;
 
+    installBento();
+
     const loginCache = Helpers.readUserData();
     if (loginCache) {
       changeLoginState(true);
@@ -43,6 +46,11 @@ class App extends React.Component<IAppProps, {}> {
         .catch((err) => {
           // handle error
         });
+
+      const bentoUserData = Helpers.readBentoUserData();
+      if (bentoUserData) {
+        initializeBento(bentoUserData.account, bentoUserData.user);
+      }
     }
   }
 
@@ -53,6 +61,7 @@ class App extends React.Component<IAppProps, {}> {
       <div className="App">
         {loggedIn ? (
           <div>
+            <bento-sidebar />
             <Route exact={true} path="/" component={HomeComponent} />
             <Route
               exact={true}

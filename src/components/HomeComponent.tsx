@@ -2,10 +2,10 @@ import DataActions from 'actions/DataActions';
 import LoginActions from 'actions/LoginActions';
 import { BASE_URL } from 'constants/';
 import { IUser } from 'constants/datatypes';
-import APIService from 'helpers/APIService';
+import { clearBento } from 'helpers/Bento';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Link, withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import './styles/home.css';
 
@@ -23,22 +23,35 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
     { link: 'brews', label: 'Brews' },
     { link: 'recipes', label: 'Recipes' },
     { link: 'dictionary', label: 'Ingredient Dictionary' },
-    { link: 'settings', label: 'User Settings' }
+    { link: 'settings', label: 'User Settings' },
   ];
 
-  public render () {
-    const { message, user } = this.props;
+  public render() {
+    const { user } = this.props;
     const username = user ? user.username : '';
 
-    return (<div className='home-wrapper'>
-      <h1>{ `Hello ${username}.` }</h1>
-      {user.image && <img className='home-image' src={`${ BASE_URL }/uploads/${ user.id }/${ user.image }`} />}
+    return (
+      <div className="home-wrapper">
+        <h1>{`Hello ${username}.`}</h1>
+        {user.image && (
+          <img
+            className="home-image"
+            src={`${BASE_URL}/uploads/${user.id}/${user.image}`}
+          />
+        )}
 
-      <nav className='menu-bar'>
-        {this.linkNavBar.map(btn => <button key={btn.label}><Link to={btn.link}>{btn.label}</Link></button>)}
-        <button onClick={this.logout}>Logout</button>
-      </nav>
-    </div>);
+        <nav className="menu-bar">
+          {this.linkNavBar.map((btn) => (
+            <button key={btn.label}>
+              <Link to={btn.link}>{btn.label}</Link>
+            </button>
+          ))}
+          <button onClick={this.logout}>Logout</button>
+        </nav>
+
+        <bento-embed />
+      </div>
+    );
   }
 
   private logout = () => {
@@ -46,22 +59,30 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
     sessionStorage.removeItem('userData');
     changeLoginState(false);
     changeUser({});
-  }
+    clearBento();
+  };
 }
 
 const mapStateToProps = (state) => {
   return {
     message: state.message,
-    user: state.user
+    user: state.user,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    applyDictionaryData: (dictionary) => dispatch(DataActions.applyDictionaryData(dictionary)),
-    changeLoginState: (loginState) => dispatch(LoginActions.changeLoginState(loginState)),
-    changeUser: (user) => dispatch(LoginActions.changeUser(user))
+    applyDictionaryData: (dictionary) =>
+      dispatch(DataActions.applyDictionaryData(dictionary)),
+    changeLoginState: (loginState) =>
+      dispatch(LoginActions.changeLoginState(loginState)),
+    changeUser: (user) => dispatch(LoginActions.changeUser(user)),
   };
-}
+};
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeComponent as React.ComponentClass<any>));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(HomeComponent as React.ComponentClass<any>)
+);

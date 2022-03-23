@@ -4,6 +4,7 @@ import Select from 'react-select';
 import { IBentoAccount, IBentoUser } from 'constants/bentoTypes';
 import DummyDataDict from 'constants/DummyDataDict';
 import APIService from 'helpers/APIService';
+import { initializeBento } from 'helpers/Bento';
 import Helpers from 'helpers/Helpers';
 import { LOGIN_PATH } from './LoginComponent';
 import { REGISTER_PATH } from './SignupComponent';
@@ -88,7 +89,13 @@ export default function LoginPresetComponent({
         changeLoginState(true);
         changeUser(res.data);
         Helpers.setUserData(res.data);
+        Helpers.setBentoUserData({
+          account: selectedAccount,
+          user: selectedUser,
+        });
         Helpers.setCookie('LOGIN_COOKIE_NAME', selectedUser.fullName, 720);
+
+        initializeBento(selectedAccount, selectedUser);
       };
 
       tryLogin().catch((err) => {
