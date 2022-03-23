@@ -8,6 +8,7 @@ import { initializeBento } from 'helpers/Bento';
 import Helpers from 'helpers/Helpers';
 import { LOGIN_PATH } from './LoginComponent';
 import { REGISTER_PATH } from './SignupComponent';
+import './styles/login.css';
 
 interface IMenuOption {
   value: string;
@@ -109,19 +110,34 @@ export default function LoginPresetComponent({
   return (
     <div className="login-wrapper">
       <div className="selection-box">
+        <h1>Brüe Logs TS</h1>
         <h3>Account</h3>
-        <Select
-          options={accountMenuOpts}
-          value={accountOption}
-          onChange={handleAccountSelect}
-        />
+        <div className="dark-text">
+          <Select
+            options={accountMenuOpts}
+            value={accountOption}
+            onChange={handleAccountSelect}
+            className="select"
+          />
+        </div>
         <h3>User</h3>
-        <Select
-          options={userList}
-          value={userOption}
-          onChange={handleUserSelect}
-        />
-        <button onClick={submitLogin}>Enter</button>
+        <div className="dark-text">
+          <Select
+            options={userList}
+            value={userOption}
+            onChange={handleUserSelect}
+            className="select"
+          />
+        </div>
+        <button className="main-button" onClick={submitLogin}>
+          Enter
+        </button>
+      </div>
+
+      <div className="video-background">
+        <video playsInline autoPlay muted loop>
+          <source src="NewMod.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
   );

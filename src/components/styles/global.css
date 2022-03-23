@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .modal {
@@ -38,4 +39,61 @@
   height: 200vh;
 
   z-index: -2;
+}
+
+:root {
+  --main-bg-color: rgba(46, 45, 44, 0.9);
+  --main-border-color: #a1a9b5;
+  --main-text-color: #ebe8e6;
+  --main-text-color-bright: #f7f6f5;
+  --dark-text-color: #383736;
+  --sub-color: #827f7d;
+  --sub-color-bright: #9c9997;
+  --accent-color: #db9e2c;
+  --accent-color-bright: #edb855;
+}
+
+.main-button {
+  color: var(--main-text-color);
+  background-color: var(--accent-color);
+  padding: 1em;
+  border-radius: 1em;
+  cursor: pointer;
+  transition: all 0.5s;
+  font-size: 1.1em;
+}
+
+.main-button:hover {
+  background-color: var(--accent-color-bright);
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.dark-text {
+  color: var(--dark-text-color);
+}
+
+h3 {
+  font-weight: 600;
+  user-select: none;
+}
+
+h1 {
+  padding-bottom: 0.6em;
+  border-bottom: 1px solid var(--main-text-color);
+  user-select: none;
+}
+
+a {
+  cursor: pointer;
+  transition: all 0.5s;
+  text-decoration: none;
+}
+
+.menu-bar {
+  margin-bottom: 0.5em;
+}
+
+.menu-bar a {
+  color: var(--dark-text-color);
 }
