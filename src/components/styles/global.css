@@ -113,3 +113,8 @@ a {
 .menu-bar a {
   color: var(--dark-text-color);
 }
+
+.content-wrapper {
+  display: flex;
+  height: 100vh;
+}

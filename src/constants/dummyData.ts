@@ -42,7 +42,7 @@ export const ORGS = [
 const DEFAULT_ACCOUNTS: IBentoAccountSeed[] = [
   {
     id: 'bentonians',
-    name: 'Bentonian Trust Fund',
+    name: 'Bentonian Vineyards',
     users: ['Ozzy Barros', 'Maya Gutierrez', 'Polly Gould', 'Bonnie Wang'],
   },
   {
@@ -57,7 +57,7 @@ const DEFAULT_ACCOUNTS: IBentoAccountSeed[] = [
   },
   {
     id: 'vlk',
-    name: 'Valkaron',
+    name: 'Cathedral V',
     users: [
       'Serenna Arsenath',
       'Varias Naverti',

@@ -18,6 +18,7 @@
   padding: 2em;
   height: 45%;
   width: 50%;
+  max-width: 700px;
   position: absolute;
   top: 50%;
   left: 50%;

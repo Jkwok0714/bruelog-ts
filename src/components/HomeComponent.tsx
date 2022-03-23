@@ -19,21 +19,17 @@ interface IHomeComponentProps {
 }
 
 class HomeComponent extends React.Component<IHomeComponentProps, {}> {
-  public linkNavBar = [
-    { link: 'brews', label: 'Brews' },
-    { link: 'recipes', label: 'Recipes' },
-    { link: 'dictionary', label: 'Ingredient Dictionary' },
-    { link: 'settings', label: 'User Settings' },
-  ];
-
   public render() {
     const { user } = this.props;
-    const username = user ? user.username : '';
 
     return (
       <div className="home-wrapper">
         <header className="header">
-          <h1>{`Hello ${username}.`}</h1>
+          <h1>BLTS</h1>
+          <span className="subtext">
+            (But hijacked to be a Bento test thing)
+          </span>
+
           {user.image && (
             <img
               className="home-image"
@@ -41,28 +37,15 @@ class HomeComponent extends React.Component<IHomeComponentProps, {}> {
             />
           )}
 
-          <nav className="menu-bar">
-            {this.linkNavBar.map((btn) => (
-              <button key={btn.label}>
-                <Link to={btn.link}>{btn.label}</Link>
-              </button>
-            ))}
-            <button onClick={this.logout}>Logout</button>
-          </nav>
+          <img src="back.png" className="header-background" />
         </header>
 
-        <bento-embed />
+        <div className="embed-wrapper">
+          <bento-embed />
+        </div>
       </div>
     );
   }
-
-  private logout = () => {
-    const { changeUser, changeLoginState } = this.props;
-    sessionStorage.removeItem('userData');
-    changeLoginState(false);
-    changeUser({});
-    clearBento();
-  };
 }
 
 const mapStateToProps = (state) => {

@@ -102,6 +102,7 @@ export default function LoginPresetComponent({
         Helpers.setUserData(res.data);
         Helpers.setBentoUserData({
           account: selectedAccount,
+          org: selectedOrg.label,
           user: selectedUser,
         });
         Helpers.setCookie('LOGIN_COOKIE_NAME', selectedUser.fullName, 720);

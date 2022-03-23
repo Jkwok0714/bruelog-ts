@@ -14,6 +14,7 @@ import HomeComponent from './components/HomeComponent';
 import LogEntryComponent from './components/LogEntryComponent';
 import LoginComponent from './components/LoginComponent';
 import ManagementComponent from './components/ManagementComponent';
+import MenuBar from './components/MenuBar';
 import RecipesComponent from './components/RecipesComponent';
 import SignupComponent from './components/SignupComponent';
 import './components/styles/global.css';
@@ -60,8 +61,9 @@ class App extends React.Component<IAppProps, {}> {
     return (
       <div className="App">
         {loggedIn ? (
-          <div>
+          <div className="content-wrapper">
             <bento-sidebar />
+            <MenuBar />
             <Route exact={true} path="/" component={HomeComponent} />
             <Route
               exact={true}

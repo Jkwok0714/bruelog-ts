@@ -51,6 +51,7 @@ class Helpers {
   public static setBentoUserData(data: {
     user: IBentoUser;
     account: IBentoAccount;
+    org: string;
   }) {
     window.sessionStorage.bentoUserData = JSON.stringify(data);
   }
@@ -60,6 +61,7 @@ class Helpers {
       return JSON.parse(window.sessionStorage.bentoUserData) as {
         user: IBentoUser;
         account: IBentoAccount;
+        org: string;
       };
     } catch (e) {
       return null;
