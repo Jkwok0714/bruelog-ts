@@ -100,6 +100,7 @@ export default function LoginPresetComponent({
         Helpers.setUserData(res.data);
         Helpers.setBentoUserData({
           account: selectedAccount,
+          appId: selectedOrg.value,
           org: selectedOrg.label,
           user: selectedUser,
         });
@@ -107,7 +108,7 @@ export default function LoginPresetComponent({
         changeUser(res.data);
         Helpers.setCookie('LOGIN_COOKIE_NAME', selectedUser.fullName, 720);
 
-        initializeBento(selectedAccount, selectedUser);
+        initializeBento(selectedAccount, selectedUser, selectedOrg.value);
       };
 
       tryLogin().catch((err) => {
@@ -115,7 +116,7 @@ export default function LoginPresetComponent({
         APIService.post(REGISTER_PATH, data).then(() => tryLogin());
       });
     },
-    [selectedAccount, selectedUser]
+    [selectedAccount, selectedUser, selectedOrg]
   );
 
   return (

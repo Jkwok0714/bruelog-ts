@@ -50,7 +50,11 @@ class App extends React.Component<IAppProps, {}> {
 
       const bentoUserData = Helpers.readBentoUserData();
       if (bentoUserData) {
-        initializeBento(bentoUserData.account, bentoUserData.user);
+        initializeBento(
+          bentoUserData.account,
+          bentoUserData.user,
+          bentoUserData.appId
+        );
       }
     }
   }

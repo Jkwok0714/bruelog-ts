@@ -52,6 +52,7 @@ class Helpers {
     user: IBentoUser;
     account: IBentoAccount;
     org: string;
+    appId: string;
   }) {
     window.sessionStorage.bentoUserData = JSON.stringify(data);
   }
@@ -62,6 +63,7 @@ class Helpers {
         user: IBentoUser;
         account: IBentoAccount;
         org: string;
+        appId: string;
       };
     } catch (e) {
       return null;
