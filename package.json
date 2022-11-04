@@ -33,7 +33,8 @@
     "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'red,yellow' \"npm run start\" \"npm run server-dev\"",
     "payday-prod": "cd ../paydayio-prod && yarn dev",
     "payday": "cd ../paydayio && yarn dev",
-    "bento": "concurrently --names 'PAYDAY,PAYDAY-PROD,BRUELOGS,BRUELOGS-SERVER' --prefix-colors 'red,yellow,green,cyan' \"npm run payday\" \"npm run payday-prod\" \"npm run start\" \"npm run server-dev\" "
+    "local-static": "cd ~/Desktop/Files/static && http-server -a localhost -p 3005",
+    "bento": "concurrently --names 'PAYDAY,PAYDAY-PROD,BRUELOGS,BRUELOGS-SERVER,STATIC' --prefix-colors 'red,yellow,green,cyan,magenta' \"npm run payday\" \"npm run payday-prod\" \"npm run start\" \"npm run server-dev\" \"npm run local-static\" "
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
